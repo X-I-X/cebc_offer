@@ -612,6 +612,36 @@
       min-height: 1.4em;
     }
 
+    /* ── MONTHLY COST INFO CARD ─────────────────────────────────────────── */
+    .info-card-monthly {
+      max-width: 900px;
+      margin: 0 auto 40px auto;
+      padding: 24px 32px;
+      background: var(--bg-light);
+      border-radius: 10px;
+      text-align: center;
+    }
+    .info-card-label {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+    }
+    .info-card-body {
+      font-size: 0.95rem;
+      color: var(--text-mid);
+      line-height: 1.6;
+      margin-bottom: 6px;
+    }
+    .info-card-bridge {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: 12px;
+      font-style: italic;
+    }
+
     /* ── ADD-ONS SECTION ──────────────────────────────────────────────── */
     #addons { background: var(--white); }
     .addons-carousel-wrap {
@@ -1472,6 +1502,13 @@
     </div><!-- /.packages-grid -->
   </div>
 </section>
+
+<div class="info-card-monthly">
+  <p class="info-card-label">ONGOING PLATFORM COSTS</p>
+  <p class="info-card-body">Expected recurring monthly expenses: $115&ndash;$250. Varies with configuration and automation depth.</p>
+  <p class="info-card-body">We'll explore nonprofit pricing options to help offset these costs.</p>
+  <p class="info-card-bridge">Support tiers shown below are billed separately.</p>
+</div>
 
 <!-- ══════════════════════════════════════════════════════════════════════
      ADD-ONS
