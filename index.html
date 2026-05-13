@@ -618,10 +618,13 @@
       gap: 20px;
       transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
       will-change: transform;
+      align-items: stretch;
     }
     .carousel-slide {
       flex: 0 0 calc(50% - 10px);
       min-width: 0;
+      display: flex;
+      flex-direction: column;
     }
     @media (max-width: 900px) {
       .carousel-slide { flex: 0 0 calc(85% - 10px); }
@@ -677,6 +680,14 @@
       position: relative;
       transition: box-shadow 0.22s, border-color 0.22s;
       cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+    .addon-card .addon-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
     }
     .addon-card.selected { border-color: var(--blue-btn); box-shadow: 0 4px 20px rgba(74,144,226,0.15); }
     .addon-check {
@@ -693,7 +704,36 @@
     .addon-card.selected .addon-check { background: var(--blue-btn); border-color: var(--blue-btn); color: #fff; }
     .addon-name { font-size: 1.1rem; font-weight: 700; color: var(--text-dark); margin-bottom: 4px; }
     .addon-price { font-size: 0.95rem; font-weight: 700; color: var(--blue-royal); margin-bottom: 10px; }
-    .addon-desc { font-size: 0.92rem; color: var(--text-mid); line-height: 1.65; margin-bottom: 12px; }
+    .addon-desc {
+      font-size: 0.92rem;
+      color: var(--text-mid);
+      line-height: 1.65;
+      margin-bottom: 12px;
+      overflow: hidden;
+      display: -webkit-box;
+      -webkit-line-clamp: 4;
+      -webkit-box-orient: vertical;
+      transition: max-height 0.3s ease;
+    }
+    .addon-desc.expanded {
+      display: block;
+      -webkit-line-clamp: unset;
+      overflow: visible;
+    }
+    .read-more-btn {
+      background: none;
+      border: none;
+      color: var(--blue-btn);
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      padding: 4px 0;
+      margin-top: 4px;
+      text-align: left;
+    }
+    .read-more-btn:hover {
+      color: var(--blue-royal);
+    }
     .addon-options { margin-top: 12px; }
 
     /* ── ROADMAP SECTION ──────────────────────────────────────────────── */
@@ -1299,6 +1339,7 @@
         <div class="addon-check" id="check-content"></div>
         <div class="addon-name">Content Creation Session</div>
         <div class="addon-price" id="priceAddonContent">$1,200–$2,000</div>
+        <div class="addon-body">
         <p class="addon-desc">On-site visit to the church. We capture professional photos of the building, sanctuary, ministry spaces, and recent events. Short interview clips with the pastor, ministry leaders, and key members (typically 5 to 8 people, 1 to 2 minutes each) for use across the website and social channels. Light editing and color correction included. Delivered as a content library your team can pull from for ongoing posts. Half-day focused on photos and interviews. Full-day adds b-roll and exterior shots. Additional travel charges apply outside Palm Beach County.</p>
         <div class="addon-options" onclick="event.stopPropagation()">
           <div class="toggle-group-label" style="font-size:0.72rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--text-muted); margin-bottom:8px;">Session Length</div>
@@ -1307,6 +1348,7 @@
             <span class="pill" data-value="full" onclick="setContentDay(event,'full')">Full-day. $2,000</span>
           </div>
         </div>
+        </div>
       </div></div>
 
       <!-- Add-on 2 -->
@@ -1314,7 +1356,9 @@
         <div class="addon-check" id="check-seo"></div>
         <div class="addon-name">SEO Optimization</div>
         <div class="addon-price">$800–$1,200</div>
+        <div class="addon-body">
         <p class="addon-desc">Local SEO program for Palm Beach County. Keyword research, schema markup for events and services, on-page optimization across ministry pages, sitemap submission, one month of ranking monitoring with a follow-up adjustment session.</p>
+        </div>
       </div></div>
 
       <!-- Add-on 3 -->
@@ -1322,7 +1366,9 @@
         <div class="addon-check" id="check-training"></div>
         <div class="addon-name">Training Package</div>
         <div class="addon-price">$600–$1,000</div>
+        <div class="addon-body">
         <p class="addon-desc">Three training sessions designed for different age groups and comfort levels. Written cheat sheets, recorded walkthroughs for common tasks, 30-day post-training support window. Package A includes one session. This add-on expands to the full multi-session program.</p>
+        </div>
       </div></div>
 
       <!-- Add-on 4 -->
@@ -1330,6 +1376,7 @@
         <div class="addon-check" id="check-support"></div>
         <div class="addon-name">Ongoing Support</div>
         <div class="addon-price" id="priceAddonSupport">$400–$600/month</div>
+        <div class="addon-body">
         <p class="addon-desc">Three tiers of monthly support. Six-month minimum commitment. Extends month-to-month after that. Twelve-month commitment available at the same rate, locking in price stability.</p>
         <p class="addon-desc" style="margin-top:8px; margin-bottom:4px;"><strong>Essential ($400/month):</strong> Monthly check-in call, automation health monitoring, answering team questions, first-line support when something breaks. No content updates or development work included.</p>
         <p class="addon-desc" style="margin-bottom:4px;"><strong>Plus ($500/month):</strong> Everything in Essential, plus up to 4 hours per month of content updates handled by our team (event page updates, photo swaps, copy changes, minor design tweaks).</p>
@@ -1352,6 +1399,7 @@
           </div>
         </div>
       </div></div>
+      </div>
 
         </div>
       </div>
@@ -1944,6 +1992,21 @@
     goTo(0);
     startAuto();
   })();
+
+  /* ── READ MORE FOR ADDON DESCRIPTIONS ─────────────────────────────── */
+  document.querySelectorAll('.addon-desc').forEach(desc => {
+    // Only add button if text actually overflows (clamp is active)
+    if (desc.scrollHeight <= desc.clientHeight + 2) return;
+    const btn = document.createElement('button');
+    btn.className = 'read-more-btn';
+    btn.textContent = 'Read more';
+    btn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      desc.classList.toggle('expanded');
+      btn.textContent = desc.classList.contains('expanded') ? 'Show less' : 'Read more';
+    });
+    desc.parentNode.insertBefore(btn, desc.nextSibling);
+  });
 </script>
 
 </body>
