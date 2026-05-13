@@ -50,6 +50,10 @@
       display: flex;
       align-items: center;
       padding: 0 32px;
+      transition: transform 0.3s ease;
+    }
+    #site-header.header-hidden {
+      transform: translateY(-100%);
     }
     .header-inner {
       width: 100%;
@@ -366,18 +370,26 @@
     /* ── PACKAGES SECTION ─────────────────────────────────────────────── */
     #packages { background: var(--bg-light); }
     .packages-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 24px;
-      align-items: start;
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+      transition: all 0.4s ease;
       margin-top: 48px;
     }
     .pkg-card {
+      flex: 1;
+      min-width: 0;
       background: var(--bg-light);
       border: 1px solid var(--border);
       border-radius: 10px;
       padding: 28px;
-      transition: box-shadow 0.25s;
+      transition: flex 0.4s ease, box-shadow 0.2s ease, border 0.2s ease;
+    }
+    .packages-grid.has-selection .pkg-card {
+      flex: 1;
+    }
+    .packages-grid.has-selection .pkg-card.selected {
+      flex: 2.2;
     }
     .pkg-card:hover { box-shadow: 0 6px 24px rgba(26,79,204,0.08); }
     .pkg-card.featured {
@@ -415,17 +427,9 @@
       margin-bottom: 18px;
       font-style: italic;
     }
-    .pkg-price {
-      font-size: 2rem;
-      font-weight: 800;
-      color: var(--blue-royal);
-      margin-bottom: 24px;
-    }
-    .pkg-price small {
-      font-size: 0.9rem;
-      font-weight: 500;
-      color: var(--text-muted);
-    }
+    .pkg-price-wrap { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; margin-bottom: 24px; }
+    .pkg-price { font-size: 2rem; font-weight: 800; color: var(--blue-royal); line-height: 1; }
+    .pkg-price-label { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); font-weight: 500; }
     .pkg-includes {
       margin-bottom: 24px;
     }
@@ -705,6 +709,13 @@
     }
 
     /* ── FOOTER ───────────────────────────────────────────────────────── */
+    body.sticky-active {
+      padding-bottom: 72px;
+    }
+    footer, .site-footer {
+      position: relative;
+      z-index: 1;
+    }
     footer {
       background: var(--blue-section);
       color: #fff;
@@ -735,7 +746,8 @@
       .header-nav, .header-social { display: none; }
       .hamburger { display: flex; }
       .outcomes-grid { grid-template-columns: 1fr; }
-      .packages-grid { grid-template-columns: 1fr; }
+      .packages-grid { flex-direction: column; }
+      .packages-grid.has-selection .pkg-card.selected { flex: unset; }
       .pkg-card.featured { transform: none; }
       .addons-grid { grid-template-columns: 1fr; }
     }
@@ -937,7 +949,10 @@
         <div class="pkg-eyebrow">Findable</div>
         <div class="pkg-name">Modern Foundation</div>
         <div class="pkg-position">A church people can actually find and reach.</div>
-        <div class="pkg-price" id="priceA">$2,500–$3,500 <small>one-time</small></div>
+        <div class="pkg-price-wrap" id="priceA">
+          <span class="pkg-price">$2,500–$3,500</span>
+          <span class="pkg-price-label">one-time</span>
+        </div>
 
         <ul class="pkg-includes">
           <li>New website on a professional platform, modern design, mobile-first, fast loading</li>
@@ -1004,7 +1019,10 @@
         <div class="pkg-eyebrow">Current</div>
         <div class="pkg-name">Connected Foundation</div>
         <div class="pkg-position">A church that always feels active, alive, and present.</div>
-        <div class="pkg-price" id="priceB">$5,000–$6,500 <small>one-time</small></div>
+        <div class="pkg-price-wrap" id="priceB">
+          <span class="pkg-price">$5,000–$6,500</span>
+          <span class="pkg-price-label">one-time</span>
+        </div>
 
         <ul class="pkg-includes">
           <li>Everything in Modern Foundation</li>
@@ -1091,7 +1109,10 @@
         <div class="pkg-eyebrow">Reliable</div>
         <div class="pkg-name">Communications Platform</div>
         <div class="pkg-position">A church where the family who calls actually gets a callback.</div>
-        <div class="pkg-price" id="priceC">$7,500–$9,500 <small>one-time</small></div>
+        <div class="pkg-price-wrap" id="priceC">
+          <span class="pkg-price">$7,500–$9,500</span>
+          <span class="pkg-price-label">one-time</span>
+        </div>
 
         <ul class="pkg-includes">
           <li>Everything in Connected Foundation</li>
@@ -1475,6 +1496,7 @@
     const btnEl = document.getElementById('configBtn' + pkg);
     const isOpen = togglesEl.classList.contains('open');
 
+    const grid = document.querySelector('.packages-grid');
     if (!isOpen) {
       // Close any other open configure sections
       ['A','B','C'].forEach(p => {
@@ -1488,11 +1510,13 @@
       selectedPkg = pkg;
       document.querySelectorAll('.pkg-card').forEach(c => c.classList.remove('selected'));
       document.getElementById('pkg' + pkg + '-card').classList.add('selected');
+      if (grid) grid.classList.add('has-selection');
       recalc(pkg);
       updateStickyBar();
     } else {
       togglesEl.classList.remove('open');
       btnEl.textContent = 'Configure this package ›';
+      if (grid) grid.classList.remove('has-selection');
     }
   }
 
@@ -1513,7 +1537,7 @@
   /* ── STICKY BAR UPDATE ─────────────────────────────────────────────── */
   function updateStickyBar() {
     const bar = document.getElementById('sticky-bar');
-    if (!selectedPkg) { bar.classList.remove('visible'); return; }
+    if (!selectedPkg) { bar.classList.remove('visible'); document.body.classList.remove('sticky-active'); return; }
 
     const base = BASE[selectedPkg];
     const state = pkgState[selectedPkg];
@@ -1538,6 +1562,7 @@
     document.getElementById('stickyMonthly').textContent = monthlyLine;
 
     bar.classList.add('visible');
+    document.body.classList.add('sticky-active');
   }
 
   /* ── ADD-ON STATE ──────────────────────────────────────────────────── */
@@ -1745,6 +1770,21 @@
       setTimeout(() => { window.location.href = '/'; }, 700);
     });
   }
+
+  /* ── SCROLL-HIDE HEADER ─────────────────────────────────────────── */
+  (function() {
+    let lastScrollY = window.scrollY;
+    const header = document.querySelector('#site-header');
+    window.addEventListener('scroll', function() {
+      const currentScrollY = window.scrollY;
+      if (currentScrollY > lastScrollY && currentScrollY > 80) {
+        header.classList.add('header-hidden');
+      } else {
+        header.classList.remove('header-hidden');
+      }
+      lastScrollY = currentScrollY;
+    }, { passive: true });
+  })();
 
   /* ── INIT ──────────────────────────────────────────────────────────── */
   ['A','B','C'].forEach(pkg => recalc(pkg));
