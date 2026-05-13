@@ -851,6 +851,18 @@
       transition: color 0.2s;
     }
     .footer-links a:hover { color: #fff; }
+    .footer-disclaimer {
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.5);
+      line-height: 1.6;
+      margin-top: 24px;
+      padding-top: 16px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+      text-align: center;
+    }
 
     /* ── RESPONSIVE ───────────────────────────────────────────────────── */
     @media (max-width: 900px) {
@@ -1287,7 +1299,10 @@
           <li>Nonprofit collaboration suite setup</li>
           <li>Shared inboxes for prayer requests and urgent messages</li>
           <li>Expanded analytics: response-time tracking, missed-call counts, ministry engagement</li>
+          <li>Support and training included.</li>
         </ul>
+
+        <p style="font-size:0.82rem; color:var(--text-muted); margin-bottom:16px;">Content creation sessions and SEO optimization are available as add-ons and are not included in this package.</p>
 
         <button class="btn-configure-toggle" id="configBtnC" onclick="toggleConfigure('C')">Configure this package ›</button>
 
@@ -1422,7 +1437,7 @@
         <div class="addon-name">SEO Optimization</div>
         <div class="addon-price">$800–$1,200</div>
         <div class="addon-body">
-        <p class="addon-desc">Local SEO program for Palm Beach County. Keyword research, schema markup for events and services, on-page optimization across ministry pages, sitemap submission, one month of ranking monitoring with a follow-up adjustment session.</p>
+        <p class="addon-desc">Basic SEO is included in all packages. This add-on covers the full local SEO program for Palm Beach County. Keyword research, schema markup for events and services, on-page optimization across ministry pages, sitemap submission, one month of ranking monitoring with a follow-up adjustment session.</p>
         </div>
       </div></div>
 
@@ -1440,22 +1455,20 @@
       <div class="carousel-slide"><div class="addon-card" id="addon-support" onclick="toggleAddon('support')">
         <div class="addon-check" id="check-support"></div>
         <div class="addon-name">Ongoing Support</div>
-        <div class="addon-price" id="priceAddonSupport">$400–$600/month</div>
+        <div class="addon-price" id="priceAddonSupport">$100–$250/month</div>
         <div class="addon-body">
-        <p class="addon-desc">Three tiers of monthly support. Six-month minimum commitment.</p>
+        <p class="addon-desc">Two tiers of monthly support. Six-month minimum commitment.</p>
         <button class="support-tiers-toggle read-more-btn" onclick="event.stopPropagation()">See support tiers ›</button>
         <div class="support-tiers-detail">
-          <p style="margin-top:8px; margin-bottom:4px;"><strong>Essential ($400/month):</strong> Monthly check-in call, automation health monitoring, answering team questions, first-line support when something breaks. No content updates or development work included.</p>
-          <p style="margin-bottom:4px;"><strong>Plus ($500/month):</strong> Everything in Essential, plus up to 4 hours per month of content updates handled by our team (event page updates, photo swaps, copy changes, minor design tweaks).</p>
-          <p><strong>Full ($600/month):</strong> Everything in Plus, plus bug fixing, integration adjustments, small feature additions, and priority response within 24 hours.</p>
+          <p style="margin-top:8px; margin-bottom:4px;"><strong>Essential — $100/month:</strong> 2 hours a month</p>
+          <p style="margin-bottom:4px;"><strong>Plus — $250/month:</strong> 4 hours a month</p>
         </div>
         <div class="addon-options" onclick="event.stopPropagation()">
           <div class="toggle-group" style="margin-bottom:12px;">
             <div class="toggle-group-label" style="font-size:0.72rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--text-muted); margin-bottom:8px;">Support Tier</div>
             <div class="pill-group" id="supportTierPills">
-              <span class="pill active" data-value="400" onclick="setSupportOption(event,'tier','400')">Essential. $400/mo</span>
-              <span class="pill" data-value="500" onclick="setSupportOption(event,'tier','500')">Plus. $500/mo</span>
-              <span class="pill" data-value="600" onclick="setSupportOption(event,'tier','600')">Full. $600/mo</span>
+              <span class="pill active" data-value="100" onclick="setSupportOption(event,'tier','100')">Essential. $100/mo</span>
+              <span class="pill" data-value="250" onclick="setSupportOption(event,'tier','250')">Plus. $250/mo</span>
             </div>
           </div>
           <div class="toggle-group">
@@ -1509,6 +1522,7 @@
     <div class="footer-inner">
       <p style="color:rgba(255,255,255,0.75); font-size:0.95rem;"><strong>Aluksons Business Solutions</strong></p>
       <p style="color:rgba(255,255,255,0.75); font-size:0.95rem;">Reach us at <a href="mailto:info@aluksons.com" style="color:rgba(255,255,255,0.9); text-decoration:underline;">info@aluksons.com</a> or visit <a href="https://www.aluksons.com" target="_blank" style="color:rgba(255,255,255,0.9); text-decoration:underline;">www.aluksons.com</a></p>
+      <p class="footer-disclaimer">The pricing and details on this page are intended to guide our conversation, not to bind either party. Final scope, timing, and pricing will be confirmed in writing after we meet in person and align on the specifics. Nothing here constitutes a contract or commitment until both parties sign a formal agreement.</p>
     </div>
   </div>
 </footer>
@@ -1757,7 +1771,7 @@
     content:  { selected: false, low: 1200, high: 1200 },
     seo:      { selected: false },
     training: { selected: false },
-    support:  { selected: false, tier: 400, duration: 6 }
+    support:  { selected: false, tier: 100, duration: 6 }
   };
 
   function toggleAddon(id) {
@@ -1847,7 +1861,7 @@
     params.set('training', addonState.training.selected ? '1' : '0');
 
     if (addonState.support.selected) {
-      const tm = { 400: 'essential', 500: 'plus', 600: 'full' };
+      const tm = { 100: 'essential', 250: 'plus' };
       params.set('support', tm[addonState.support.tier] || 'essential');
       params.set('duration', addonState.support.duration);
     } else {
@@ -1922,7 +1936,7 @@
     if (supportVal && supportVal !== 'none') {
       if (!addonState.support.selected) toggleAddon('support');
 
-      const tierMap = { essential: '400', plus: '500', full: '600' };
+      const tierMap = { essential: '100', plus: '250' };
       const tierVal = tierMap[supportVal];
       if (tierVal) {
         addonState.support.tier = parseInt(tierVal);
