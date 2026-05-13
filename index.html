@@ -1992,11 +1992,6 @@
   ['A','B','C'].forEach(pkg => recalc(pkg));
   restoreFromURL();
 
-  // Pre-select Package C if no URL params
-  if (!window.location.search || !new URLSearchParams(window.location.search).get('pkg')) {
-    setTimeout(function() { toggleConfigure('C'); }, 100);
-  }
-
   /* ── ADD-ONS CAROUSEL (continuous RAF flow) ──────────────────────── */
   var isUserInteracting = false;
   (function() {
