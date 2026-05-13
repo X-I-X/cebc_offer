@@ -1332,7 +1332,7 @@
             <div class="toggle-group-label">Email &amp; Calendar Platform</div>
             <div class="pill-group" data-pkg="C" data-toggle="email">
               <span class="pill active" data-value="m365" data-adj="0,0">Nonprofit collaboration suite</span>
-              <span class="pill" data-value="google-workspace" data-adj="0,0">Google-based workspace suite</span>
+              <span class="pill" data-value="google-workspace" data-adj="0,0">Cloud-based workspace suite</span>
             </div>
             <div class="pill-sublabel" id="emailSubC">Email, calendar, and document collaboration. Free or heavily discounted for qualifying nonprofit organizations.</div>
           </div>
@@ -1343,7 +1343,7 @@
             </div>
             <div class="pill-sublabel" id="seatsSubC">Up to 10 seats included. Seats are allocated across the church's operational structure: one per ministry, one for the operator role, one for a deacon, and additional seats for management, operations, and financial leadership. Monthly costs are likely covered under nonprofit licensing for qualifying organizations.</div>
             <div style="margin-top:10px;">
-              <div style="font-size:0.82rem; color:var(--text-muted); margin-bottom:6px;">Additional seats ($150 to $200 each)</div>
+              <div style="font-size:0.82rem; color:var(--text-muted); margin-bottom:6px;">Additional seats ($120 to $180/year each)</div>
               <div class="qty-control">
                 <button onclick="adjustSeats('C', -1)">−</button>
                 <span class="qty-val" id="seatsC">0</span>
@@ -1672,7 +1672,7 @@
     let val = parseInt(el.textContent) + delta;
     if (val < 0) val = 0;
     el.textContent = val;
-    pkgState[pkg].extraSeats = [val * 150, val * 200];
+    pkgState[pkg].extraSeats = [val * 120, val * 180];
     recalc(pkg);
     if (selectedPkg === pkg) updateStickyBar();
   }
