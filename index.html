@@ -195,7 +195,7 @@
     .hero-overlay {
       position: absolute;
       inset: 0;
-      background: rgba(10, 20, 50, 0.45);
+      background: rgba(10, 20, 50, 0.25);
     }
     .hero-content {
       position: absolute;
@@ -206,7 +206,7 @@
       width: 90%;
       max-width: 800px;
       z-index: 2;
-      background: rgba(0, 0, 20, 0.55);
+      background: rgba(0, 0, 20, 0.40);
       padding: 40px 48px;
       border-radius: 12px;
       backdrop-filter: blur(2px);
@@ -1224,10 +1224,10 @@
           <div class="toggle-group">
             <div class="toggle-group-label">Content Editing</div>
             <div class="pill-group" data-pkg="B" data-toggle="cms">
-              <span class="pill active" data-value="collaborative" data-adj="0,0">Sanity Studio</span><span style="font-size:0.75rem; color:var(--blue-royal); font-weight:600; margin-left:6px;">(Recommended)</span>
-              <span class="pill" data-value="simplified" data-adj="300,500">Alternative CMS</span>
+              <span class="pill active" data-value="collaborative" data-adj="0,0">Full CMS with ministry logins</span><span style="font-size:0.75rem; color:var(--blue-royal); font-weight:600; margin-left:6px;">(Recommended)</span>
+              <span class="pill" data-value="simplified" data-adj="300,500">Simplified editor</span>
             </div>
-            <div class="pill-sublabel" id="cmsSubB">Role-based logins, each ministry sees only their content, clean editing interface. Free for up to 20 users. Scales as the church grows. The recommended choice for organizations prioritizing collaboration and long-term scalability.</div>
+            <div class="pill-sublabel" id="cmsSubB">Each ministry has their own login and only sees their content. Clean editing interface, scales as the church grows.</div>
           </div>
           <div class="toggle-group">
             <div class="toggle-group-label">Publishing Automation</div>
@@ -1274,11 +1274,11 @@
 
         <ul class="pkg-includes">
           <li>Everything in Connected Foundation</li>
-          <li>Microsoft Teams Phone with operator-to-deacon cascade routing</li>
+          <li>Cloud phone system with cascade routing</li>
           <li>Voicemails arrive in the right ministry's inbox. Tagged and timestamped.</li>
           <li>Hold music, transfer interface, per-ministry direct lines</li>
           <li>5 seats included. Additional seats $150 to $200 each.</li>
-          <li>Microsoft 365 Nonprofit setup. Free or heavily discounted for qualifying churches.</li>
+          <li>Nonprofit collaboration suite setup</li>
           <li>Shared inboxes for prayer requests and urgent messages</li>
           <li>Expanded analytics: response-time tracking, missed-call counts, ministry engagement</li>
         </ul>
@@ -1309,10 +1309,10 @@
           <div class="toggle-group">
             <div class="toggle-group-label">Content Editing</div>
             <div class="pill-group" data-pkg="C" data-toggle="cms">
-              <span class="pill active" data-value="collaborative" data-adj="0,0">Sanity Studio</span><span style="font-size:0.75rem; color:var(--blue-royal); font-weight:600; margin-left:6px;">(Recommended)</span>
-              <span class="pill" data-value="simplified" data-adj="300,500">Alternative CMS</span>
+              <span class="pill active" data-value="collaborative" data-adj="0,0">Full CMS with ministry logins</span><span style="font-size:0.75rem; color:var(--blue-royal); font-weight:600; margin-left:6px;">(Recommended)</span>
+              <span class="pill" data-value="simplified" data-adj="300,500">Simplified editor</span>
             </div>
-            <div class="pill-sublabel" id="cmsSubC">Role-based logins, each ministry sees only their content, clean editing interface. Free for up to 20 users. Scales as the church grows. The recommended choice for organizations prioritizing collaboration and long-term scalability.</div>
+            <div class="pill-sublabel" id="cmsSubC">Each ministry has their own login and only sees their content. Clean editing interface, scales as the church grows.</div>
           </div>
           <div class="toggle-group">
             <div class="toggle-group-label">Publishing Automation</div>
@@ -1325,10 +1325,10 @@
           <div class="toggle-group">
             <div class="toggle-group-label">Email &amp; Calendar Platform</div>
             <div class="pill-group" data-pkg="C" data-toggle="email">
-              <span class="pill active" data-value="m365" data-adj="0,0">Microsoft 365 Nonprofit</span>
-              <span class="pill" data-value="google-workspace" data-adj="0,0">Google Workspace for Nonprofits</span>
+              <span class="pill active" data-value="m365" data-adj="0,0">Nonprofit collaboration suite</span>
+              <span class="pill" data-value="google-workspace" data-adj="0,0">Google-based workspace suite</span>
             </div>
-            <div class="pill-sublabel" id="emailSubC">Pairs naturally with Microsoft Teams Phone. Free or heavily discounted for qualifying churches. Often replaces several existing paid subscriptions.</div>
+            <div class="pill-sublabel" id="emailSubC">Email, calendar, and document collaboration. Free or heavily discounted for qualifying nonprofit organizations.</div>
           </div>
           <div class="toggle-group">
             <div class="toggle-group-label">Phone Seats</div>
@@ -1357,7 +1357,7 @@
             <li>Voicemails routed to the correct ministry inbox automatically, tagged and timestamped.</li>
             <li>Hold music, transfer interface, per-ministry direct lines.</li>
             <li>5 seats included (operator plus deacons). Additional seats available.</li>
-            <li>Microsoft 365 Nonprofit setup using qualifying nonprofit status. Free or heavily discounted for eligible organizations. Often replaces several paid subscriptions.</li>
+            <li>Nonprofit collaboration suite setup</li>
             <li>Shared inbox setup across ministry teams. Prayer requests and contact submissions visible to multiple team members, not stuck in one person's email.</li>
             <li>Email routing rules that surface high-priority messages to the right ministry in real time.</li>
             <li>Expanded analytics: response-time tracking, missed-call counts, voicemail-to-callback timing, ministry-level engagement metrics. Leadership can see at a glance whether no one is falling through the cracks.</li>
@@ -1580,8 +1580,8 @@
     custom: 'Fast, purpose-built, and lightweight. Easier to extend and integrate over time.'
   };
   const cmsLabels = {
-    collaborative: 'Role-based logins, each ministry sees only their content, clean editing interface. Free for up to 20 users. Scales as the church grows. The recommended choice for organizations prioritizing collaboration and long-term scalability.',
-    simplified: 'Available for clients with specific platform preferences or budget constraints.'
+    collaborative: 'Each ministry has their own login and only sees their content. Clean editing interface, scales as the church grows.',
+    simplified: 'Faster setup, lighter footprint. Ideal for smaller teams or clients with specific platform preferences.'
   };
   const donationLabels = {
     applepay: 'Select your preferred primary donation method. All options can be configured together.',
@@ -1591,8 +1591,8 @@
     paypal: 'Select your preferred primary donation method. All options can be configured together.'
   };
   const emailLabels = {
-    'm365': 'Pairs naturally with Microsoft Teams Phone. Free or heavily discounted for qualifying churches. Often replaces several existing paid subscriptions.',
-    'google-workspace': 'If our team prefers Gmail and Google Calendar. Also free for qualifying nonprofit organizations.'
+    'm365': 'Email, calendar, and document collaboration. Free or heavily discounted for qualifying nonprofit organizations.',
+    'google-workspace': 'Gmail, Google Calendar, and Drive. Also free for qualifying nonprofits.'
   };
   const publishingLabels = {
     core: 'Automated publishing workflows: video cross-posting, content routing, scheduled distribution. Included in the package price.',
