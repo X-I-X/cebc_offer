@@ -409,6 +409,9 @@
     .pkg-card.featured.selected {
       box-shadow: 0 0 0 4px rgba(59,130,246,0.22), 0 8px 32px rgba(59,130,246,0.18);
     }
+    .pkg-card.featured-c { background: #ffffff; border-top: 4px solid var(--blue-btn); transform: translateY(-8px); box-shadow: 0 8px 32px rgba(59,130,246,0.18); }
+    .pkg-card.featured-c.selected { box-shadow: 0 0 0 4px rgba(59,130,246,0.22), 0 8px 32px rgba(59,130,246,0.18); }
+    @media (max-width: 768px) { .pkg-card.featured-c { transform: none; } }
     .pkg-eyebrow {
       font-size: 0.75rem;
       font-weight: 600;
@@ -711,12 +714,14 @@
       color: var(--text-mid);
       line-height: 1.65;
       margin-bottom: 12px;
-      max-height: 5em;
+    }
+    .support-tiers-detail {
+      max-height: 0;
       overflow: hidden;
       transition: max-height 0.4s ease;
     }
-    .addon-desc.expanded {
-      max-height: 600px;
+    .support-tiers-detail.expanded {
+      max-height: 400px;
     }
     .read-more-btn {
       background: none;
@@ -873,7 +878,8 @@
   transition: opacity 0.6s ease;
 }
 #logo-splash video {
-  width: 280px; max-width: 70vw;
+  width: 840px;
+  max-width: 90vw;
 }
 #logo-splash.fade-out { opacity: 0; pointer-events: none; }
 </style>
@@ -1128,12 +1134,13 @@
             <div class="toggle-group-label">DONATION SETUP</div>
             <div style="font-size:0.8rem; color:var(--text-muted); margin-bottom:6px;">Apple Pay, Google Pay, Venmo, Zelle, PayPal, and more.</div>
             <div class="pill-group" data-pkg="A" data-toggle="donation">
-              <span class="pill active" data-value="stripe" data-adj="0,0">Stripe</span>
-              <span class="pill" data-value="paypal-only" data-adj="0,0">PayPal only</span>
-              <span class="pill" data-value="church-platform" data-adj="100,150">Givelify</span>
-              <span class="pill" data-value="stripe-paypal" data-adj="100,150">Stripe + PayPal</span>
+              <span class="pill active" data-value="applepay" data-adj="0,0">Apple Pay</span>
+              <span class="pill" data-value="googlepay" data-adj="0,0">Google Pay</span>
+              <span class="pill" data-value="venmo" data-adj="0,0">Venmo</span>
+              <span class="pill" data-value="zelle" data-adj="0,0">Zelle</span>
+              <span class="pill" data-value="paypal" data-adj="0,0">PayPal</span>
             </div>
-            <div class="pill-sublabel" id="donationSubA">One-tap giving with Apple Pay and Google Pay. Recommended for reducing donation friction.</div>
+            <div class="pill-sublabel" id="donationSubA">Select your preferred primary donation method. All options can be configured together.</div>
           </div>
           <div class="pkg-live-price" id="livePriceA"></div>
         </div>
@@ -1163,8 +1170,8 @@
         </div>
       </div>
 
-      <!-- PACKAGE B (featured) -->
-      <div class="pkg-card featured" id="pkgB-card">
+      <!-- PACKAGE B -->
+      <div class="pkg-card" id="pkgB-card">
         <div class="pkg-eyebrow">Current</div>
         <div class="pkg-name">Connected Foundation</div>
         <div class="pkg-position">A church that always feels active, alive, and present.</div>
@@ -1206,12 +1213,13 @@
             <div class="toggle-group-label">DONATION SETUP</div>
             <div style="font-size:0.8rem; color:var(--text-muted); margin-bottom:6px;">Apple Pay, Google Pay, Venmo, Zelle, PayPal, and more.</div>
             <div class="pill-group" data-pkg="B" data-toggle="donation">
-              <span class="pill active" data-value="stripe" data-adj="0,0">Stripe</span>
-              <span class="pill" data-value="paypal-only" data-adj="0,0">PayPal only</span>
-              <span class="pill" data-value="church-platform" data-adj="100,150">Givelify</span>
-              <span class="pill" data-value="stripe-paypal" data-adj="100,150">Stripe + PayPal</span>
+              <span class="pill active" data-value="applepay" data-adj="0,0">Apple Pay</span>
+              <span class="pill" data-value="googlepay" data-adj="0,0">Google Pay</span>
+              <span class="pill" data-value="venmo" data-adj="0,0">Venmo</span>
+              <span class="pill" data-value="zelle" data-adj="0,0">Zelle</span>
+              <span class="pill" data-value="paypal" data-adj="0,0">PayPal</span>
             </div>
-            <div class="pill-sublabel" id="donationSubB">One-tap giving with Apple Pay and Google Pay. Recommended for reducing donation friction.</div>
+            <div class="pill-sublabel" id="donationSubB">Select your preferred primary donation method. All options can be configured together.</div>
           </div>
           <div class="toggle-group">
             <div class="toggle-group-label">Content Editing</div>
@@ -1255,7 +1263,7 @@
       </div>
 
       <!-- PACKAGE C -->
-      <div class="pkg-card" id="pkgC-card">
+      <div class="pkg-card featured-c" id="pkgC-card">
         <div class="pkg-eyebrow">Reliable</div>
         <div class="pkg-name">Communications Platform</div>
         <div class="pkg-position">A church where the family who calls actually gets a callback.</div>
@@ -1290,12 +1298,13 @@
             <div class="toggle-group-label">DONATION SETUP</div>
             <div style="font-size:0.8rem; color:var(--text-muted); margin-bottom:6px;">Apple Pay, Google Pay, Venmo, Zelle, PayPal, and more.</div>
             <div class="pill-group" data-pkg="C" data-toggle="donation">
-              <span class="pill active" data-value="stripe" data-adj="0,0">Stripe</span>
-              <span class="pill" data-value="paypal-only" data-adj="0,0">PayPal only</span>
-              <span class="pill" data-value="church-platform" data-adj="100,150">Givelify</span>
-              <span class="pill" data-value="stripe-paypal" data-adj="100,150">Stripe + PayPal</span>
+              <span class="pill active" data-value="applepay" data-adj="0,0">Apple Pay</span>
+              <span class="pill" data-value="googlepay" data-adj="0,0">Google Pay</span>
+              <span class="pill" data-value="venmo" data-adj="0,0">Venmo</span>
+              <span class="pill" data-value="zelle" data-adj="0,0">Zelle</span>
+              <span class="pill" data-value="paypal" data-adj="0,0">PayPal</span>
             </div>
-            <div class="pill-sublabel" id="donationSubC">One-tap giving with Apple Pay and Google Pay. Recommended for reducing donation friction.</div>
+            <div class="pill-sublabel" id="donationSubC">Select your preferred primary donation method. All options can be configured together.</div>
           </div>
           <div class="toggle-group">
             <div class="toggle-group-label">Content Editing</div>
@@ -1426,10 +1435,13 @@
         <div class="addon-name">Ongoing Support</div>
         <div class="addon-price" id="priceAddonSupport">$400–$600/month</div>
         <div class="addon-body">
-        <p class="addon-desc">Three tiers of monthly support. Six-month minimum commitment. Extends month-to-month after that. Twelve-month commitment available at the same rate, locking in price stability.</p>
-        <p class="addon-desc" style="margin-top:8px; margin-bottom:4px;"><strong>Essential ($400/month):</strong> Monthly check-in call, automation health monitoring, answering team questions, first-line support when something breaks. No content updates or development work included.</p>
-        <p class="addon-desc" style="margin-bottom:4px;"><strong>Plus ($500/month):</strong> Everything in Essential, plus up to 4 hours per month of content updates handled by our team (event page updates, photo swaps, copy changes, minor design tweaks).</p>
-        <p class="addon-desc"><strong>Full ($600/month):</strong> Everything in Plus, plus bug fixing, integration adjustments, small feature additions, and priority response within 24 hours.</p>
+        <p class="addon-desc">Three tiers of monthly support. Six-month minimum commitment.</p>
+        <button class="support-tiers-toggle read-more-btn" onclick="event.stopPropagation()">See support tiers ›</button>
+        <div class="support-tiers-detail">
+          <p style="margin-top:8px; margin-bottom:4px;"><strong>Essential ($400/month):</strong> Monthly check-in call, automation health monitoring, answering team questions, first-line support when something breaks. No content updates or development work included.</p>
+          <p style="margin-bottom:4px;"><strong>Plus ($500/month):</strong> Everything in Essential, plus up to 4 hours per month of content updates handled by our team (event page updates, photo swaps, copy changes, minor design tweaks).</p>
+          <p><strong>Full ($600/month):</strong> Everything in Plus, plus bug fixing, integration adjustments, small feature additions, and priority response within 24 hours.</p>
+        </div>
         <div class="addon-options" onclick="event.stopPropagation()">
           <div class="toggle-group" style="margin-bottom:12px;">
             <div class="toggle-group-label" style="font-size:0.72rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--text-muted); margin-bottom:8px;">Support Tier</div>
@@ -1572,10 +1584,11 @@
     simplified: 'Available for clients with specific platform preferences or budget constraints.'
   };
   const donationLabels = {
-    stripe: 'One-tap giving with Apple Pay and Google Pay. Recommended for reducing donation friction.',
-    'paypal-only': 'Keep your current setup as it is today.',
-    'church-platform': 'Church-specific giving platform. Slightly higher fees, very low friction for first-time givers.',
-    'stripe-paypal': 'Give visitors a choice. Covers the broadest range of donor preferences.'
+    applepay: 'Select your preferred primary donation method. All options can be configured together.',
+    googlepay: 'Select your preferred primary donation method. All options can be configured together.',
+    venmo: 'Select your preferred primary donation method. All options can be configured together.',
+    zelle: 'Select your preferred primary donation method. All options can be configured together.',
+    paypal: 'Select your preferred primary donation method. All options can be configured together.'
   };
   const emailLabels = {
     'm365': 'Pairs naturally with Microsoft Teams Phone. Free or heavily discounted for qualifying churches. Often replaces several existing paid subscriptions.',
@@ -2069,20 +2082,15 @@
     animateCarousel();
   })();
 
-  /* ── READ MORE FOR ADDON DESCRIPTIONS ─────────────────────────────── */
-  document.querySelectorAll('.addon-desc').forEach(function(desc) {
-    if (desc.scrollHeight <= desc.clientHeight + 2) return;
-    const btn = document.createElement('button');
-    btn.className = 'read-more-btn';
-    btn.textContent = 'Read more';
-    btn.addEventListener('click', function(e) {
-      e.stopPropagation();
-      const expanded = desc.classList.toggle('expanded');
-      btn.textContent = expanded ? 'Show less' : 'Read more';
-      isUserInteracting = expanded;
+  /* ── SUPPORT TIERS TOGGLE ──────────────────────────────────────────── */
+  var supportToggleBtn = document.querySelector('.support-tiers-toggle');
+  var supportDetail = document.querySelector('.support-tiers-detail');
+  if (supportToggleBtn && supportDetail) {
+    supportToggleBtn.addEventListener('click', function() {
+      var expanded = supportDetail.classList.toggle('expanded');
+      supportToggleBtn.textContent = expanded ? 'Hide tiers ‹' : 'See support tiers ›';
     });
-    desc.parentNode.insertBefore(btn, desc.nextSibling);
-  });
+  }
 </script>
 
 </body>
