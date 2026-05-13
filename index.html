@@ -175,6 +175,7 @@
       margin-left: calc(-50vw + 50%);
       height: 100vh;
       overflow: hidden;
+      max-width: 100vw;
       margin-top: 70px;
     }
     .video-container {
@@ -637,10 +638,10 @@
       display: flex;
       flex-direction: column;
     }
-    @media (max-width: 900px) {
+    @media (max-width: 768px) {
       .carousel-slide { flex: 0 0 calc(85% - 10px); }
     }
-    @media (max-width: 600px) {
+    @media (max-width: 480px) {
       .carousel-slide { flex: 0 0 calc(92% - 10px); }
     }
     .carousel-btn {
@@ -821,7 +822,7 @@
 
     /* ── FOOTER ───────────────────────────────────────────────────────── */
     body.sticky-active {
-      padding-bottom: 72px;
+      padding-bottom: calc(72px + env(safe-area-inset-bottom, 0px));
     }
     footer, .site-footer {
       position: relative;
@@ -862,6 +863,75 @@
       margin-left: auto;
       margin-right: auto;
       text-align: center;
+    }
+
+    /* ── MOBILE OPTIMIZATION (≤768px) ──────────────────────────────────── */
+    @media (max-width: 768px) {
+      /* TASK 1 — Package cards: stack on mobile, full-width */
+      .packages-grid {
+        flex-direction: column !important;
+        align-items: stretch;
+      }
+      .pkg-card {
+        flex: unset !important;
+        width: 100%;
+      }
+      .packages-grid.has-selection .pkg-card {
+        flex: unset !important;
+        width: 100%;
+      }
+      .packages-grid.has-selection .pkg-card.selected {
+        flex: unset !important;
+        width: 100%;
+      }
+      .pkg-card.featured-c {
+        transform: none !important;
+      }
+
+      /* TASK 3 — Sticky total bar: smaller on mobile + iOS safe-area */
+      #sticky-bar, .sticky-bar {
+        padding: 10px 16px;
+        font-size: 0.85rem;
+      }
+      #sticky-bar .sticky-total, .sticky-bar .sticky-total {
+        font-size: 0.9rem;
+      }
+      #sticky-bar button, .sticky-bar button {
+        padding: 8px 14px;
+        font-size: 0.8rem;
+      }
+
+      /* TASK 4 — Touch targets: 44px minimum */
+      .pill,
+      .carousel-btn,
+      .btn-configure-toggle,
+      .btn-primary,
+      .btn-ghost,
+      .read-more-btn,
+      .support-tiers-toggle {
+        min-height: 44px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      /* TASK 5 — Font scaling */
+      .hero-content h1 {
+        font-size: 2rem;
+        line-height: 1.2;
+      }
+      .hero-content p {
+        font-size: 0.95rem;
+      }
+      section h2, .section-heading {
+        font-size: 1.5rem;
+      }
+      .pkg-name {
+        font-size: 1.4rem;
+      }
+      .pkg-price {
+        font-size: 1.6rem;
+      }
     }
 
     /* ── RESPONSIVE ───────────────────────────────────────────────────── */
@@ -2097,6 +2167,11 @@
       if (pixelOffset >= totalW) pixelOffset = 0;
       track.style.transform = 'translateX(-' + pixelOffset + 'px)';
     });
+
+    window.addEventListener('resize', function() {
+      pixelOffset = 0;
+      track.style.transform = 'translateX(0)';
+    }, { passive: true });
 
     animateCarousel();
   })();
