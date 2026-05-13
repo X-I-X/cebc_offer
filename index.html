@@ -59,6 +59,18 @@
       gap: 24px;
     }
     .header-logo img { height: 50px; width: auto; object-fit: contain; }
+    .logo-link { display: inline-flex; align-items: center; }
+    .logo-link img {
+      transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+      transform-origin: left center;
+      cursor: pointer;
+    }
+    .logo-link:hover img {
+      transform: scale(1.12);
+    }
+    .logo-link.logo-expanded img {
+      transform: scale(1.35);
+    }
     .header-nav {
       display: flex;
       align-items: center;
@@ -744,7 +756,7 @@
 ══════════════════════════════════════════════════════════════════════ -->
 <header id="site-header">
   <div class="header-inner">
-    <a href="#" class="header-logo">
+    <a href="/" class="header-logo logo-link">
       <img src="assets/logo.jpg" alt="Christ Evangelical Baptist Church" />
     </a>
 
@@ -1721,6 +1733,17 @@
 
     updateStickyBar();
     document.getElementById('packages').scrollIntoView({ behavior: 'smooth' });
+  }
+
+  /* ── LOGO CLICK ANIMATION ────────────────────────────────────────── */
+  const logoLink = document.querySelector('.logo-link');
+  if (logoLink) {
+    logoLink.addEventListener('click', function(e) {
+      e.preventDefault();
+      this.classList.add('logo-expanded');
+      setTimeout(() => { this.classList.remove('logo-expanded'); }, 600);
+      setTimeout(() => { window.location.href = '/'; }, 700);
+    });
   }
 
   /* ── INIT ──────────────────────────────────────────────────────────── */
