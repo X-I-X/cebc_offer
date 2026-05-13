@@ -356,6 +356,8 @@
       margin-bottom: 12px;
     }
     .outcome-card p { color: var(--text-mid); font-size: 1rem; line-height: 1.7; }
+    .outcome-icon-link { display: inline-block; margin-bottom: 10px; opacity: 0.8; transition: opacity 0.2s, transform 0.2s; }
+    .outcome-icon-link:hover { opacity: 1; transform: scale(1.1); }
 
     /* ── ANCHOR CALLOUT ───────────────────────────────────────────────── */
     .anchor-callout {
@@ -621,7 +623,7 @@
       align-items: stretch;
     }
     .carousel-slide {
-      flex: 0 0 calc(50% - 10px);
+      flex: 0 0 calc(40% - 10px);
       min-width: 0;
       display: flex;
       flex-direction: column;
@@ -709,16 +711,12 @@
       color: var(--text-mid);
       line-height: 1.65;
       margin-bottom: 12px;
+      max-height: 5em;
       overflow: hidden;
-      display: -webkit-box;
-      -webkit-line-clamp: 4;
-      -webkit-box-orient: vertical;
-      transition: max-height 0.3s ease;
+      transition: max-height 0.4s ease;
     }
     .addon-desc.expanded {
-      display: block;
-      -webkit-line-clamp: unset;
-      overflow: visible;
+      max-height: 600px;
     }
     .read-more-btn {
       background: none;
@@ -865,20 +863,60 @@
 </head>
 <body>
 
+<!-- Logo Splash -->
+<style>
+#logo-splash {
+  position: fixed; top:0; left:0; right:0; bottom:0;
+  background: #ffffff;
+  z-index: 99999;
+  display: flex; align-items: center; justify-content: center;
+  transition: opacity 0.6s ease;
+}
+#logo-splash video {
+  width: 280px; max-width: 70vw;
+}
+#logo-splash.fade-out { opacity: 0; pointer-events: none; }
+</style>
+<div id="logo-splash">
+  <video autoplay muted playsinline id="splash-video">
+    <source src="assets/logo-animation.mp4" type="video/mp4">
+  </video>
+</div>
+<script>
+(function() {
+  var splash = document.getElementById('logo-splash');
+  var vid = document.getElementById('splash-video');
+  function dismissSplash() {
+    splash.classList.add('fade-out');
+    setTimeout(function() { if(splash.parentNode) splash.remove(); }, 650);
+  }
+  if (vid) {
+    vid.addEventListener('ended', dismissSplash);
+    // Fallback: dismiss after 4s even if video doesn't fire ended
+    setTimeout(dismissSplash, 4000);
+  } else {
+    setTimeout(dismissSplash, 1500);
+  }
+})();
+</script>
+
 <!-- ══════════════════════════════════════════════════════════════════════
      HEADER
 ══════════════════════════════════════════════════════════════════════ -->
 <header id="site-header">
   <div class="header-inner">
-    <a href="/" class="header-logo logo-link">
-      <img src="assets/logo.jpg" alt="Christ Evangelical Baptist Church" />
+    <a href="/" class="logo-link" id="header-logo-link">
+      <video id="header-logo-video" muted playsinline width="160" style="display:none; height:50px; object-fit:contain;">
+        <source src="assets/logo-animation.mp4" type="video/mp4">
+      </video>
+      <img id="header-logo-img" src="assets/logo.jpg" alt="Christ Evangelical Baptist Church" style="height:50px; display:block;">
     </a>
 
     <nav class="header-nav">
       <a href="#">Home</a>
       <a href="#packages">Packages</a>
       <a href="#addons">Add-Ons</a>
-      <a href="mailto:Lionel.Aluka@aluksons.com">Contact</a>
+      <a href="mailto:info@aluksons.com">Contact</a>
     </nav>
 
     <div class="header-social">
@@ -924,7 +962,7 @@
     <a href="#" class="drawer-link">Home</a>
     <a href="#packages" class="drawer-link">Packages</a>
     <a href="#addons" class="drawer-link">Add-Ons</a>
-    <a href="mailto:Lionel.Aluka@aluksons.com" class="drawer-link">Contact</a>
+    <a href="mailto:info@aluksons.com" class="drawer-link">Contact</a>
   </nav>
   <div class="drawer-social">
     <a href="https://www.instagram.com/cebcfl" target="_blank" rel="noopener" class="social-link">
@@ -969,8 +1007,7 @@
   <div class="hero-overlay"></div>
   <div class="hero-content">
     <span class="hero-eyebrow">Digital Operations for Churches</span>
-    <h1>The website is just the front door.</h1>
-    <p class="hero-sub">The current website issues are not just visual. The larger issue is operational: outdated ministry pages, missed communication, difficult updates, disconnected systems, and too much responsibility concentrated in too few people. This proposal focuses on solving those operational problems alongside the website itself.</p>
+    <h1>CEBC Website Proposal</h1>
     <div class="hero-cta">
       <a href="#packages" class="btn-primary">Configure your package →</a>
       <button class="btn-ghost" onclick="openVideoModal()">See how this came together</button>
@@ -1000,23 +1037,32 @@
   <div class="container">
     <div class="text-center">
       <span class="section-label">What This Builds Toward</span>
-      <h2 class="section-heading">Three things your church gains</h2>
+      <h2 class="section-heading">Three things Christ Evangelical Baptist Church gains</h2>
       <p class="section-sub">Not features. Not deliverables. Actual outcomes that your congregation and leadership will feel.</p>
     </div>
     <div class="outcomes-grid">
       <div class="outcome-card">
         <div class="eyebrow">Findable</div>
-        <h3>People can actually find you</h3>
+        <a href="https://maps.app.goo.gl/7k8i8zhK6Me5u7y3A" target="_blank" class="outcome-icon-link" title="Find us on Google Maps">
+          <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#1a4fcc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        </a>
+        <h3><a href="https://maps.app.goo.gl/7k8i8zhK6Me5u7y3A" target="_blank">People can actually find us</a></h3>
         <p>A fast, mobile-first website with current service times, live stream access, and a Google presence that works. When someone searches for a church in your area, you show up.</p>
       </div>
       <div class="outcome-card">
         <div class="eyebrow">Current</div>
-        <h3>Your church always feels alive</h3>
-        <p>Sunday service video posts automatically. Ministry pages stay updated. Your community sees an active, present church. Not a website that was last touched in 2021.</p>
+        <a href="https://riverwpb.com/" target="_blank" class="outcome-icon-link" title="The River Church">
+          <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#1a4fcc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 6c.6.5 1.2 1 2.5 1C7 7 7 5 9.5 5c2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2v14c-2.5 0-2.5 2-5 2-2.6 0-2.4-2-5-2-2.5 0-2.5 2-5 2-1.3 0-1.9-.5-2.5-1"/><path d="M2 12c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2"/></svg>
+        </a>
+        <h3><a href="https://riverwpb.com/" target="_blank">Our church will feel alive</a></h3>
+        <p>Sunday service video posts automatically. Ministry pages stay updated. Our community sees an active, present church. Not a website that was last touched in 2021.</p>
       </div>
       <div class="outcome-card">
         <div class="eyebrow">Reliable</div>
-        <h3>Calls actually get answered</h3>
+        <a href="tel:+19546871492" class="outcome-icon-link" title="Call us">
+          <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#1a4fcc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.14 1.18 2 2 0 012.11 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92z"/></svg>
+        </a>
+        <h3><a href="tel:+19546871492">Calls actually get answered</a></h3>
         <p>A cloud phone system that routes calls to the right person. Voicemails go to the right ministry inbox. A family reaching out in crisis gets a real callback. Not silence.</p>
       </div>
     </div>
@@ -1028,7 +1074,7 @@
 ══════════════════════════════════════════════════════════════════════ -->
 <div class="anchor-callout">
   <div class="container">
-    <h2>Built around CBC's current operational needs</h2>
+    <h2>Built around CEBC's current operational needs</h2>
     <p>The proposal below focuses first on the areas discussed during our meeting: faster communication, easier ministry updates, improved mobile experience, clearer visitor navigation, and reducing dependency on manual workarounds and outdated systems.</p>
   </div>
 </div>
@@ -1040,7 +1086,7 @@
   <div class="container">
     <div class="text-center">
       <span class="section-label">Choose Your Package</span>
-      <h2 class="section-heading">Recommended implementation options for CBC</h2>
+      <h2 class="section-heading">Recommended implementation options for CEBC</h2>
       <p class="section-sub">The proposal below is organized into three distinct implementation approaches, ranging from a streamlined modern website foundation to a more fully integrated communications and operations platform.</p>
     </div>
 
@@ -1061,7 +1107,7 @@
           <li>Built-in content editor so non-technical staff can update pages without code</li>
           <li>Homepage redesigned: livestream prominent, events surfaced, clear navigation</li>
           <li>Up to 10 ministry pages with structured templates</li>
-          <li>Stripe donation page with Apple Pay and Google Pay. PayPal available alongside if preferred.</li>
+          <li>Donation page with multiple integrations.</li>
           <li>Local SEO foundation and Google Business Profile optimization</li>
           <li>Account security and continuity setup</li>
           <li>One training session included</li>
@@ -1079,7 +1125,8 @@
             <div class="pill-sublabel" id="platformSubA">Built-in ecosystem, integrated tools, and broader functionality. Ideal for teams who want everything managed in one place.</div>
           </div>
           <div class="toggle-group">
-            <div class="toggle-group-label">Donation Setup</div>
+            <div class="toggle-group-label">DONATION SETUP</div>
+            <div style="font-size:0.8rem; color:var(--text-muted); margin-bottom:6px;">Apple Pay, Google Pay, Venmo, Zelle, PayPal, and more.</div>
             <div class="pill-group" data-pkg="A" data-toggle="donation">
               <span class="pill active" data-value="stripe" data-adj="0,0">Stripe</span>
               <span class="pill" data-value="paypal-only" data-adj="0,0">PayPal only</span>
@@ -1100,12 +1147,12 @@
             <li>Built-in content editor so non-technical staff can update pages without code</li>
             <li>Homepage redesigned: livestream prominent, events surfaced, clear navigation</li>
             <li>Up to 10 ministry pages with structured templates</li>
-            <li>Stripe donation page with Apple Pay and Google Pay. PayPal available alongside if preferred.</li>
+            <li>Donation page with multiple integrations.</li>
             <li>Local SEO foundation and Google Business Profile optimization</li>
-            <li>Account security and continuity setup. Proper ownership, multi-factor authentication across all admin accounts, recovery configuration, and documented succession. Your church no longer depends on a single person's device or login.</li>
+            <li>Account security and continuity setup. Proper ownership, multi-factor authentication across all admin accounts, recovery configuration, and documented succession. Our church no longer depends on a single person's device or login.</li>
             <li>One training session included.</li>
           </ul>
-          <div class="scope-section-label">What your team continues to own</div>
+          <div class="scope-section-label">What our team continues to own</div>
           <ul class="scope-list scope-own-list">
             <li>Short-form social clips (we set up the tools and walk you through them)</li>
             <li>Sermon uploads to YouTube using our step-by-step checklist</li>
@@ -1156,7 +1203,8 @@
             <div class="pill-sublabel" id="platformSubB">Built-in ecosystem, integrated tools, and broader functionality. Ideal for teams who want everything managed in one place.</div>
           </div>
           <div class="toggle-group">
-            <div class="toggle-group-label">Donation Setup</div>
+            <div class="toggle-group-label">DONATION SETUP</div>
+            <div style="font-size:0.8rem; color:var(--text-muted); margin-bottom:6px;">Apple Pay, Google Pay, Venmo, Zelle, PayPal, and more.</div>
             <div class="pill-group" data-pkg="B" data-toggle="donation">
               <span class="pill active" data-value="stripe" data-adj="0,0">Stripe</span>
               <span class="pill" data-value="paypal-only" data-adj="0,0">PayPal only</span>
@@ -1196,7 +1244,7 @@
             <li>Digital Operations Framework: two designated content owners per ministry (primary plus backup), monthly content review schedule with calendar reminders, defined response-time expectations (24 hours for prayer requests, 48 hours for general inquiries), publishing standards document covering what content goes where, brand voice, and image guidelines, quarterly governance review with leadership to keep standards current.</li>
             <li>Monthly analytics dashboard: website traffic, donation activity, social engagement, and ministry page activity. Leadership sees ROI in concrete numbers.</li>
           </ul>
-          <div class="scope-section-label">What your team continues to own</div>
+          <div class="scope-section-label">What our team continues to own</div>
           <ul class="scope-list scope-own-list">
             <li>Inbound calls through your existing phone line (routing and cascade is in Package C)</li>
             <li>Voicemail checked manually by the secretary or rotating deacons. We set up a simple logging interface for tracking.</li>
@@ -1239,7 +1287,8 @@
             <div class="pill-sublabel" id="platformSubC">Built-in ecosystem, integrated tools, and broader functionality. Ideal for teams who want everything managed in one place.</div>
           </div>
           <div class="toggle-group">
-            <div class="toggle-group-label">Donation Setup</div>
+            <div class="toggle-group-label">DONATION SETUP</div>
+            <div style="font-size:0.8rem; color:var(--text-muted); margin-bottom:6px;">Apple Pay, Google Pay, Venmo, Zelle, PayPal, and more.</div>
             <div class="pill-group" data-pkg="C" data-toggle="donation">
               <span class="pill active" data-value="stripe" data-adj="0,0">Stripe</span>
               <span class="pill" data-value="paypal-only" data-adj="0,0">PayPal only</span>
@@ -1304,11 +1353,11 @@
             <li>Email routing rules that surface high-priority messages to the right ministry in real time.</li>
             <li>Expanded analytics: response-time tracking, missed-call counts, voicemail-to-callback timing, ministry-level engagement metrics. Leadership can see at a glance whether no one is falling through the cracks.</li>
           </ul>
-          <div class="scope-section-label">What your team continues to own</div>
+          <div class="scope-section-label">What our team continues to own</div>
           <ul class="scope-list scope-own-list">
             <li>Studio camera setup, livestream switching, and sound engineering for AV equipment (we coordinate with AV but do not deliver production infrastructure)</li>
             <li>Member directory and event registration (available as future phases)</li>
-            <li>Content creation: sermons, graphics, written posts. We automate publishing. Your team creates the content.</li>
+            <li>Content creation: sermons, graphics, written posts. We automate publishing. Our team creates the content.</li>
             <li>Existing social media clip workflow continues</li>
           </ul>
         </div>
@@ -1340,7 +1389,7 @@
         <div class="addon-name">Content Creation Session</div>
         <div class="addon-price" id="priceAddonContent">$1,200–$2,000</div>
         <div class="addon-body">
-        <p class="addon-desc">On-site visit to the church. We capture professional photos of the building, sanctuary, ministry spaces, and recent events. Short interview clips with the pastor, ministry leaders, and key members (typically 5 to 8 people, 1 to 2 minutes each) for use across the website and social channels. Light editing and color correction included. Delivered as a content library your team can pull from for ongoing posts. Half-day focused on photos and interviews. Full-day adds b-roll and exterior shots. Additional travel charges apply outside Palm Beach County.</p>
+        <p class="addon-desc">On-site visit to the church. We capture professional photos of the building, sanctuary, ministry spaces, and recent events. Short interview clips with the pastor, ministry leaders, and key members (typically 5 to 8 people, 1 to 2 minutes each) for use across the website and social channels. Light editing and color correction included. Delivered as a content library our team can pull from for ongoing posts. Half-day focused on photos and interviews. Full-day adds b-roll and exterior shots. Additional travel charges apply outside Palm Beach County.</p>
         <div class="addon-options" onclick="event.stopPropagation()">
           <div class="toggle-group-label" style="font-size:0.72rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--text-muted); margin-bottom:8px;">Session Length</div>
           <div class="pill-group" id="contentPills">
@@ -1416,7 +1465,7 @@
   <div class="container text-center">
     <span class="section-label">What Comes Next</span>
     <h2 class="section-heading">Once the foundation is in place</h2>
-    <p class="section-sub" style="margin-bottom:16px;">These are optional additions that could be implemented either during the initial rollout or as later phases, depending on budget, staffing, and how quickly CBC wants to expand its digital infrastructure.</p>
+    <p class="section-sub" style="margin-bottom:16px;">These are optional additions that could be implemented either during the initial rollout or as later phases, depending on budget, staffing, and how quickly CEBC wants to expand its digital infrastructure.</p>
     <div class="roadmap-pills">
       <span class="roadmap-pill">Livestream automation</span>
       <span class="roadmap-pill">Searchable sermon archive</span>
@@ -1439,7 +1488,8 @@
 <footer>
   <div class="container">
     <div class="footer-inner">
-      <p style="color:rgba(255,255,255,0.75); font-size:0.95rem;">Reach us at <a href="mailto:Lionel.Aluka@aluksons.com" style="color:rgba(255,255,255,0.9); text-decoration:underline;">Lionel.Aluka@aluksons.com</a> or <a href="mailto:jeffreyreinhold@gmail.com" style="color:rgba(255,255,255,0.9); text-decoration:underline;">jeffreyreinhold@gmail.com</a></p>
+      <p style="color:rgba(255,255,255,0.75); font-size:0.95rem;"><strong>Aluksons Business Solutions</strong></p>
+      <p style="color:rgba(255,255,255,0.75); font-size:0.95rem;">Reach us at <a href="mailto:info@aluksons.com" style="color:rgba(255,255,255,0.9); text-decoration:underline;">info@aluksons.com</a> or visit <a href="https://www.aluksons.com" target="_blank" style="color:rgba(255,255,255,0.9); text-decoration:underline;">www.aluksons.com</a></p>
     </div>
   </div>
 </footer>
@@ -1529,7 +1579,7 @@
   };
   const emailLabels = {
     'm365': 'Pairs naturally with Microsoft Teams Phone. Free or heavily discounted for qualifying churches. Often replaces several existing paid subscriptions.',
-    'google-workspace': 'If your team prefers Gmail and Google Calendar. Also free for qualifying nonprofit organizations.'
+    'google-workspace': 'If our team prefers Gmail and Google Calendar. Also free for qualifying nonprofit organizations.'
   };
   const publishingLabels = {
     core: 'Automated publishing workflows: video cross-posting, content routing, scheduled distribution. Included in the package price.',
@@ -1877,16 +1927,38 @@
     document.getElementById('packages').scrollIntoView({ behavior: 'smooth' });
   }
 
-  /* ── LOGO CLICK ANIMATION ────────────────────────────────────────── */
-  const logoLink = document.querySelector('.logo-link');
-  if (logoLink) {
+  /* ── HEADER LOGO VIDEO ─────────────────────────────────────────────── */
+  (function() {
+    var logoLink = document.getElementById('header-logo-link');
+    var logoVid = document.getElementById('header-logo-video');
+    var logoImg = document.getElementById('header-logo-img');
+    if (!logoLink || !logoVid || !logoImg) return;
+
+    function playHeaderLogo() {
+      logoImg.style.display = 'none';
+      logoVid.style.display = 'block';
+      logoVid.currentTime = 0;
+      logoVid.play();
+    }
+    function stopHeaderLogo() {
+      logoVid.pause();
+      logoVid.style.display = 'none';
+      logoImg.style.display = 'block';
+    }
+    logoVid.addEventListener('ended', stopHeaderLogo);
+    logoLink.addEventListener('mouseenter', playHeaderLogo);
+    logoLink.addEventListener('mouseleave', stopHeaderLogo);
+
+    // Play once on load (after splash is gone)
+    setTimeout(playHeaderLogo, 4800);
+
+    // Click: animate then navigate
     logoLink.addEventListener('click', function(e) {
       e.preventDefault();
-      this.classList.add('logo-expanded');
-      setTimeout(() => { this.classList.remove('logo-expanded'); }, 600);
-      setTimeout(() => { window.location.href = '/'; }, 700);
+      playHeaderLogo();
+      setTimeout(function() { window.location.href = '/'; }, 700);
     });
-  }
+  })();
 
   /* ── SCROLL-HIDE HEADER ─────────────────────────────────────────── */
   (function() {
@@ -1906,104 +1978,108 @@
   /* ── INIT ──────────────────────────────────────────────────────────── */
   ['A','B','C'].forEach(pkg => recalc(pkg));
   restoreFromURL();
-  /* ── ADD-ONS CAROUSEL ────────────────────────────────────── */
+
+  // Pre-select Package C if no URL params
+  if (!window.location.search || !new URLSearchParams(window.location.search).get('pkg')) {
+    setTimeout(function() { toggleConfigure('C'); }, 100);
+  }
+
+  /* ── ADD-ONS CAROUSEL (continuous RAF flow) ──────────────────────── */
+  var isUserInteracting = false;
   (function() {
     const track = document.querySelector('.addons-carousel-track');
-    const slides = document.querySelectorAll('.carousel-slide');
+    const slides = Array.from(document.querySelectorAll('.carousel-slide'));
     const prevBtn = document.querySelector('.carousel-prev');
     const nextBtn = document.querySelector('.carousel-next');
     const dotsContainer = document.querySelector('.carousel-dots');
 
     if (!track || slides.length === 0) return;
 
-    let currentIndex = 0;
+    let rafId = null;
+    let pixelOffset = 0;
+    const SPEED = 0.5;
 
-    // Build dots
-    slides.forEach((_, i) => {
+    function getTrackWidth() {
+      const slideW = slides[0] ? slides[0].offsetWidth + 20 : 0;
+      return slideW * slides.length;
+    }
+
+    // Clone slides for seamless loop
+    slides.forEach(function(slide) {
+      const clone = slide.cloneNode(true);
+      clone.setAttribute('aria-hidden', 'true');
+      track.appendChild(clone);
+    });
+
+    // Build dots (original slides only)
+    slides.forEach(function(_, i) {
       const dot = document.createElement('div');
       dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
-      dot.addEventListener('click', () => goTo(i));
+      dot.addEventListener('click', function() { goTo(i); });
       dotsContainer.appendChild(dot);
     });
 
-    function getVisibleCount() {
-      return window.innerWidth <= 600 ? 1 : window.innerWidth <= 900 ? 1 : 2;
-    }
-
     function goTo(index) {
-      const count = slides.length;
-      const visible = getVisibleCount();
-      const maxIndex = count - visible;
-      currentIndex = Math.max(0, Math.min(index, maxIndex));
-
-      // Calculate slide width including gap
-      const slideWidth = slides[0].offsetWidth + 20; // 20 = gap
-      track.style.transform = `translateX(-${currentIndex * slideWidth}px)`;
-
-      // Update dots
-      document.querySelectorAll('.carousel-dot').forEach((d, i) => {
-        d.classList.toggle('active', i === currentIndex);
+      const slideW = slides[0] ? slides[0].offsetWidth + 20 : 0;
+      pixelOffset = index * slideW;
+      document.querySelectorAll('.carousel-dot').forEach(function(d, i) {
+        d.classList.toggle('active', i === index);
       });
-
-      // Update buttons
-      prevBtn.disabled = currentIndex === 0;
-      nextBtn.disabled = currentIndex >= maxIndex;
     }
 
-    // Auto-advance
-    let autoInterval;
-
-    function startAuto() {
-      autoInterval = setInterval(() => {
-        const visible = getVisibleCount();
-        const maxIndex = slides.length - visible;
-        goTo(currentIndex >= maxIndex ? 0 : currentIndex + 1);
-      }, 4000);
+    function animateCarousel() {
+      if (!isUserInteracting) {
+        pixelOffset += SPEED;
+        const totalW = getTrackWidth();
+        if (pixelOffset >= totalW) pixelOffset = 0;
+        track.style.transform = 'translateX(-' + pixelOffset + 'px)';
+        track.style.transition = 'none';
+      }
+      rafId = requestAnimationFrame(animateCarousel);
     }
 
-    function stopAuto() {
-      clearInterval(autoInterval);
-    }
-
-    // Pause on hover
+    // Hover / touch pause
     const carouselWrap = document.querySelector('.addons-carousel-wrap');
     if (carouselWrap) {
-      carouselWrap.addEventListener('mouseenter', stopAuto);
-      carouselWrap.addEventListener('mouseleave', startAuto);
-      carouselWrap.addEventListener('touchstart', stopAuto, { passive: true });
-      carouselWrap.addEventListener('touchend', () => setTimeout(startAuto, 1000), { passive: true });
+      carouselWrap.addEventListener('mouseenter', function() { isUserInteracting = true; });
+      carouselWrap.addEventListener('mouseleave', function() { isUserInteracting = false; });
+      carouselWrap.addEventListener('touchstart', function() { isUserInteracting = true; }, { passive: true });
+      carouselWrap.addEventListener('touchend', function() { setTimeout(function() { isUserInteracting = false; }, 3000); }, { passive: true });
     }
 
-    // Reset timer on manual navigation
-    prevBtn.addEventListener('click', () => { stopAuto(); goTo(currentIndex - 1); startAuto(); });
-    nextBtn.addEventListener('click', () => { stopAuto(); goTo(currentIndex + 1); startAuto(); });
+    // Stop on card interaction
+    document.querySelectorAll('.addon-card input, .addon-card button').forEach(function(el) {
+      el.addEventListener('click', function() { isUserInteracting = true; });
+    });
 
-    // Touch/swipe support
-    let touchStartX = 0;
-    track.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
-    track.addEventListener('touchend', e => {
-      const diff = touchStartX - e.changedTouches[0].clientX;
-      if (Math.abs(diff) > 40) diff > 0 ? goTo(currentIndex + 1) : goTo(currentIndex - 1);
-    }, { passive: true });
+    // Prev / next buttons
+    if (prevBtn) prevBtn.addEventListener('click', function() {
+      isUserInteracting = true;
+      pixelOffset = Math.max(0, pixelOffset - (slides[0].offsetWidth + 20));
+      track.style.transform = 'translateX(-' + pixelOffset + 'px)';
+    });
+    if (nextBtn) nextBtn.addEventListener('click', function() {
+      isUserInteracting = true;
+      pixelOffset += slides[0].offsetWidth + 20;
+      const totalW = getTrackWidth();
+      if (pixelOffset >= totalW) pixelOffset = 0;
+      track.style.transform = 'translateX(-' + pixelOffset + 'px)';
+    });
 
-    // Recalculate on resize
-    window.addEventListener('resize', () => goTo(currentIndex), { passive: true });
-
-    goTo(0);
-    startAuto();
+    animateCarousel();
   })();
 
   /* ── READ MORE FOR ADDON DESCRIPTIONS ─────────────────────────────── */
-  document.querySelectorAll('.addon-desc').forEach(desc => {
-    // Only add button if text actually overflows (clamp is active)
+  document.querySelectorAll('.addon-desc').forEach(function(desc) {
     if (desc.scrollHeight <= desc.clientHeight + 2) return;
     const btn = document.createElement('button');
     btn.className = 'read-more-btn';
     btn.textContent = 'Read more';
     btn.addEventListener('click', function(e) {
       e.stopPropagation();
-      desc.classList.toggle('expanded');
-      btn.textContent = desc.classList.contains('expanded') ? 'Show less' : 'Read more';
+      const expanded = desc.classList.toggle('expanded');
+      btn.textContent = expanded ? 'Show less' : 'Read more';
+      isUserInteracting = expanded;
     });
     desc.parentNode.insertBefore(btn, desc.nextSibling);
   });
