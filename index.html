@@ -375,6 +375,14 @@
       padding: 36px;
       transform: translateY(-8px);
     }
+    .pkg-card.selected {
+      border: 2px solid #3b82f6;
+      box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.18), 0 8px 32px rgba(59,130,246,0.13);
+      transition: border 0.2s ease, box-shadow 0.2s ease;
+    }
+    .pkg-card.featured.selected {
+      box-shadow: 0 0 0 4px rgba(59,130,246,0.22), 0 8px 32px rgba(59,130,246,0.18);
+    }
     .pkg-eyebrow {
       font-size: 0.75rem;
       font-weight: 600;
@@ -1466,9 +1474,8 @@
       togglesEl.classList.add('open');
       btnEl.textContent = 'Close configuration ×';
       selectedPkg = pkg;
-      ['A','B','C'].forEach(p => {
-        document.getElementById('pkg' + p + '-card').style.outline = p === pkg ? '2px solid var(--blue-btn)' : '';
-      });
+      document.querySelectorAll('.pkg-card').forEach(c => c.classList.remove('selected'));
+      document.getElementById('pkg' + pkg + '-card').classList.add('selected');
       recalc(pkg);
       updateStickyBar();
     } else {
