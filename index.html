@@ -1568,7 +1568,63 @@
   }
 
   /* ── SHARE / COPY URL ──────────────────────────────────────────────── */
+  function getActivePillValue(pkg, toggle) {
+    const group = document.querySelector(`.pill-group[data-pkg="${pkg}"][data-toggle="${toggle}"]`);
+    if (!group) return null;
+    const active = group.querySelector('.pill.active');
+    return active ? active.dataset.value : null;
+  }
+
   function shareConfig() {
+    const params = new URLSearchParams();
+
+    if (selectedPkg) {
+      params.set('pkg', selectedPkg);
+
+      const platformVal = getActivePillValue(selectedPkg, 'platform');
+      if (platformVal) {
+        params.set('platform', ({ integrated: 'aio', custom: 'custom' })[platformVal] || platformVal);
+      }
+
+      const donationVal = getActivePillValue(selectedPkg, 'donation');
+      if (donationVal) {
+        const dm = { stripe: 'stripe', 'paypal-only': 'paypal', 'church-platform': 'givelify', 'stripe-paypal': 'both' };
+        params.set('donation', dm[donationVal] || donationVal);
+      }
+
+      if (selectedPkg === 'B' || selectedPkg === 'C') {
+        const cmsVal = getActivePillValue(selectedPkg, 'cms');
+        if (cmsVal) params.set('cms', ({ collaborative: 'collab', simplified: 'alt' })[cmsVal] || cmsVal);
+
+        const autoVal = getActivePillValue(selectedPkg, 'publishing');
+        if (autoVal) params.set('auto', ({ core: 'make', 'extended-publishing': 'make-ghl' })[autoVal] || autoVal);
+      }
+
+      if (selectedPkg === 'C') {
+        const wsVal = getActivePillValue(selectedPkg, 'email');
+        if (wsVal) params.set('workspace', ({ m365: 'm365', 'google-workspace': 'google' })[wsVal] || wsVal);
+
+        const seatsEl = document.getElementById('seatsC');
+        const seats = seatsEl ? parseInt(seatsEl.textContent) || 0 : 0;
+        if (seats > 0) params.set('seats', seats);
+      }
+    }
+
+    const contentPill = document.querySelector('#contentPills .pill.active');
+    params.set('content', addonState.content.selected ? (contentPill ? contentPill.dataset.value : 'half') : 'none');
+    params.set('seo', addonState.seo.selected ? '1' : '0');
+    params.set('training', addonState.training.selected ? '1' : '0');
+
+    if (addonState.support.selected) {
+      const tm = { 400: 'essential', 500: 'plus', 600: 'full' };
+      params.set('support', tm[addonState.support.tier] || 'essential');
+      params.set('duration', addonState.support.duration);
+    } else {
+      params.set('support', 'none');
+    }
+
+    history.replaceState(null, '', '?' + params.toString());
+
     navigator.clipboard.writeText(window.location.href).then(() => {
       const t = document.getElementById('copyTooltip');
       t.classList.add('show');
@@ -1578,8 +1634,91 @@
     });
   }
 
+  /* ── RESTORE FROM URL ──────────────────────────────────────────────── */
+  function restoreFromURL() {
+    const params = new URLSearchParams(window.location.search);
+    if (!params.has('pkg')) return;
+
+    const pkg = params.get('pkg');
+    if (!['A', 'B', 'C'].includes(pkg)) return;
+
+    // Open the configure panel for this package (also sets selectedPkg)
+    toggleConfigure(pkg);
+
+    // Click the matching pill in a toggle group to restore its value
+    function restorePill(pkgName, toggleName, urlValue, valueMap) {
+      const domValue = valueMap[urlValue];
+      if (!domValue) return;
+      const group = document.querySelector(`.pill-group[data-pkg="${pkgName}"][data-toggle="${toggleName}"]`);
+      if (!group) return;
+      const pill = group.querySelector(`.pill[data-value="${domValue}"]`);
+      if (pill && !pill.classList.contains('active')) pill.click();
+    }
+
+    if (params.has('platform'))  restorePill(pkg, 'platform',  params.get('platform'),  { aio: 'integrated', custom: 'custom' });
+    if (params.has('donation'))  restorePill(pkg, 'donation',  params.get('donation'),  { stripe: 'stripe', paypal: 'paypal-only', givelify: 'church-platform', both: 'stripe-paypal' });
+    if (params.has('cms'))       restorePill(pkg, 'cms',       params.get('cms'),       { collab: 'collaborative', alt: 'simplified' });
+    if (params.has('auto'))      restorePill(pkg, 'publishing', params.get('auto'),     { make: 'core', 'make-ghl': 'extended-publishing' });
+    if (params.has('workspace') && pkg === 'C') restorePill(pkg, 'email', params.get('workspace'), { m365: 'm365', google: 'google-workspace' });
+
+    // Extra seats (Package C only)
+    if (params.has('seats') && pkg === 'C') {
+      const seats = parseInt(params.get('seats')) || 0;
+      for (let i = 0; i < seats; i++) adjustSeats('C', 1);
+    }
+
+    // Content add-on
+    const contentVal = params.get('content');
+    if (contentVal === 'half' || contentVal === 'full') {
+      if (!addonState.content.selected) toggleAddon('content');
+      document.querySelectorAll('#contentPills .pill').forEach(p => p.classList.remove('active'));
+      const cp = document.querySelector(`#contentPills .pill[data-value="${contentVal}"]`);
+      if (cp) cp.classList.add('active');
+      addonState.content.low  = contentVal === 'half' ? 1200 : 2000;
+      addonState.content.high = contentVal === 'half' ? 1200 : 2000;
+      const priceEl = document.getElementById('priceAddonContent');
+      if (priceEl) priceEl.textContent = contentVal === 'half' ? '$1,200' : '$2,000';
+    }
+
+    // SEO add-on
+    if (params.get('seo') === '1' && !addonState.seo.selected) toggleAddon('seo');
+
+    // Training add-on
+    if (params.get('training') === '1' && !addonState.training.selected) toggleAddon('training');
+
+    // Support add-on
+    const supportVal = params.get('support');
+    if (supportVal && supportVal !== 'none') {
+      if (!addonState.support.selected) toggleAddon('support');
+
+      const tierMap = { essential: '400', plus: '500', full: '600' };
+      const tierVal = tierMap[supportVal];
+      if (tierVal) {
+        addonState.support.tier = parseInt(tierVal);
+        document.querySelectorAll('#supportTierPills .pill').forEach(p => {
+          p.classList.toggle('active', p.dataset.value === tierVal);
+        });
+      }
+
+      const durVal = params.get('duration');
+      if (durVal) {
+        addonState.support.duration = parseInt(durVal);
+        document.querySelectorAll('#supportDurationPills .pill').forEach(p => {
+          p.classList.toggle('active', p.dataset.value === durVal);
+        });
+      }
+
+      const priceEl = document.getElementById('priceAddonSupport');
+      if (priceEl) priceEl.textContent = `$${addonState.support.tier}/month x ${addonState.support.duration} months`;
+    }
+
+    updateStickyBar();
+    document.getElementById('packages').scrollIntoView({ behavior: 'smooth' });
+  }
+
   /* ── INIT ──────────────────────────────────────────────────────────── */
   ['A','B','C'].forEach(pkg => recalc(pkg));
+  restoreFromURL();
 </script>
 
 </body>
