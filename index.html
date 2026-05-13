@@ -602,11 +602,73 @@
 
     /* ── ADD-ONS SECTION ──────────────────────────────────────────────── */
     #addons { background: var(--white); }
-    .addons-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 24px;
+    .addons-carousel-wrap {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      position: relative;
       margin-top: 48px;
+    }
+    .addons-carousel-track-outer {
+      overflow: hidden;
+      flex: 1;
+    }
+    .addons-carousel-track {
+      display: flex;
+      gap: 20px;
+      transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      will-change: transform;
+    }
+    .carousel-slide {
+      flex: 0 0 calc(50% - 10px);
+      min-width: 0;
+    }
+    @media (max-width: 900px) {
+      .carousel-slide { flex: 0 0 calc(85% - 10px); }
+    }
+    @media (max-width: 600px) {
+      .carousel-slide { flex: 0 0 calc(92% - 10px); }
+    }
+    .carousel-btn {
+      background: var(--white);
+      border: 2px solid var(--border);
+      border-radius: 50%;
+      width: 44px;
+      height: 44px;
+      font-size: 1.2rem;
+      cursor: pointer;
+      flex-shrink: 0;
+      color: var(--blue-royal);
+      transition: background 0.2s, border-color 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .carousel-btn:hover {
+      background: var(--blue-btn);
+      color: white;
+      border-color: var(--blue-btn);
+    }
+    .carousel-btn:disabled {
+      opacity: 0.3;
+      cursor: default;
+    }
+    .carousel-dots {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 16px;
+    }
+    .carousel-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--border);
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .carousel-dot.active {
+      background: var(--blue-btn);
     }
     .addon-card {
       border: 1.5px solid var(--border);
@@ -749,7 +811,7 @@
       .packages-grid { flex-direction: column; }
       .packages-grid.has-selection .pkg-card.selected { flex: unset; }
       .pkg-card.featured { transform: none; }
-      .addons-grid { grid-template-columns: 1fr; }
+      /* addons carousel responsive handled via .carousel-slide media queries above */
     }
     @media (max-width: 600px) {
       .hero-content { padding: 28px 24px; }
@@ -1227,10 +1289,13 @@
       <p class="section-sub">Available with any package. Each add-on is independent. Mix and match.</p>
     </div>
 
-    <div class="addons-grid">
+    <div class="addons-carousel-wrap">
+      <button class="carousel-btn carousel-prev" aria-label="Previous">&#8592;</button>
+      <div class="addons-carousel-track-outer">
+        <div class="addons-carousel-track">
 
       <!-- Add-on 1 -->
-      <div class="addon-card" id="addon-content" onclick="toggleAddon('content')">
+      <div class="carousel-slide"><div class="addon-card" id="addon-content" onclick="toggleAddon('content')">
         <div class="addon-check" id="check-content"></div>
         <div class="addon-name">Content Creation Session</div>
         <div class="addon-price" id="priceAddonContent">$1,200–$2,000</div>
@@ -1242,26 +1307,26 @@
             <span class="pill" data-value="full" onclick="setContentDay(event,'full')">Full-day. $2,000</span>
           </div>
         </div>
-      </div>
+      </div></div>
 
       <!-- Add-on 2 -->
-      <div class="addon-card" id="addon-seo" onclick="toggleAddon('seo')">
+      <div class="carousel-slide"><div class="addon-card" id="addon-seo" onclick="toggleAddon('seo')">
         <div class="addon-check" id="check-seo"></div>
         <div class="addon-name">SEO Optimization</div>
         <div class="addon-price">$800–$1,200</div>
         <p class="addon-desc">Local SEO program for Palm Beach County. Keyword research, schema markup for events and services, on-page optimization across ministry pages, sitemap submission, one month of ranking monitoring with a follow-up adjustment session.</p>
-      </div>
+      </div></div>
 
       <!-- Add-on 3 -->
-      <div class="addon-card" id="addon-training" onclick="toggleAddon('training')">
+      <div class="carousel-slide"><div class="addon-card" id="addon-training" onclick="toggleAddon('training')">
         <div class="addon-check" id="check-training"></div>
         <div class="addon-name">Training Package</div>
         <div class="addon-price">$600–$1,000</div>
         <p class="addon-desc">Three training sessions designed for different age groups and comfort levels. Written cheat sheets, recorded walkthroughs for common tasks, 30-day post-training support window. Package A includes one session. This add-on expands to the full multi-session program.</p>
-      </div>
+      </div></div>
 
       <!-- Add-on 4 -->
-      <div class="addon-card" id="addon-support" onclick="toggleAddon('support')">
+      <div class="carousel-slide"><div class="addon-card" id="addon-support" onclick="toggleAddon('support')">
         <div class="addon-check" id="check-support"></div>
         <div class="addon-name">Ongoing Support</div>
         <div class="addon-price" id="priceAddonSupport">$400–$600/month</div>
@@ -1286,9 +1351,13 @@
             </div>
           </div>
         </div>
-      </div>
+      </div></div>
 
+        </div>
+      </div>
+      <button class="carousel-btn carousel-next" aria-label="Next">&#8594;</button>
     </div>
+    <div class="carousel-dots"></div>
   </div>
 </section>
 
@@ -1789,6 +1858,66 @@
   /* ── INIT ──────────────────────────────────────────────────────────── */
   ['A','B','C'].forEach(pkg => recalc(pkg));
   restoreFromURL();
+  /* ── ADD-ONS CAROUSEL ────────────────────────────────────── */
+  (function() {
+    const track = document.querySelector('.addons-carousel-track');
+    const slides = document.querySelectorAll('.carousel-slide');
+    const prevBtn = document.querySelector('.carousel-prev');
+    const nextBtn = document.querySelector('.carousel-next');
+    const dotsContainer = document.querySelector('.carousel-dots');
+
+    if (!track || slides.length === 0) return;
+
+    let currentIndex = 0;
+
+    // Build dots
+    slides.forEach((_, i) => {
+      const dot = document.createElement('div');
+      dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
+      dot.addEventListener('click', () => goTo(i));
+      dotsContainer.appendChild(dot);
+    });
+
+    function getVisibleCount() {
+      return window.innerWidth <= 600 ? 1 : window.innerWidth <= 900 ? 1 : 2;
+    }
+
+    function goTo(index) {
+      const count = slides.length;
+      const visible = getVisibleCount();
+      const maxIndex = count - visible;
+      currentIndex = Math.max(0, Math.min(index, maxIndex));
+
+      // Calculate slide width including gap
+      const slideWidth = slides[0].offsetWidth + 20; // 20 = gap
+      track.style.transform = `translateX(-${currentIndex * slideWidth}px)`;
+
+      // Update dots
+      document.querySelectorAll('.carousel-dot').forEach((d, i) => {
+        d.classList.toggle('active', i === currentIndex);
+      });
+
+      // Update buttons
+      prevBtn.disabled = currentIndex === 0;
+      nextBtn.disabled = currentIndex >= maxIndex;
+    }
+
+    prevBtn.addEventListener('click', () => goTo(currentIndex - 1));
+    nextBtn.addEventListener('click', () => goTo(currentIndex + 1));
+
+    // Touch/swipe support
+    let touchStartX = 0;
+    track.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
+    track.addEventListener('touchend', e => {
+      const diff = touchStartX - e.changedTouches[0].clientX;
+      if (Math.abs(diff) > 40) diff > 0 ? goTo(currentIndex + 1) : goTo(currentIndex - 1);
+    }, { passive: true });
+
+    // Recalculate on resize
+    window.addEventListener('resize', () => goTo(currentIndex), { passive: true });
+
+    goTo(0);
+  })();
 </script>
 
 </body>
