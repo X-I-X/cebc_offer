@@ -1902,8 +1902,33 @@
       nextBtn.disabled = currentIndex >= maxIndex;
     }
 
-    prevBtn.addEventListener('click', () => goTo(currentIndex - 1));
-    nextBtn.addEventListener('click', () => goTo(currentIndex + 1));
+    // Auto-advance
+    let autoInterval;
+
+    function startAuto() {
+      autoInterval = setInterval(() => {
+        const visible = getVisibleCount();
+        const maxIndex = slides.length - visible;
+        goTo(currentIndex >= maxIndex ? 0 : currentIndex + 1);
+      }, 4000);
+    }
+
+    function stopAuto() {
+      clearInterval(autoInterval);
+    }
+
+    // Pause on hover
+    const carouselWrap = document.querySelector('.addons-carousel-wrap');
+    if (carouselWrap) {
+      carouselWrap.addEventListener('mouseenter', stopAuto);
+      carouselWrap.addEventListener('mouseleave', startAuto);
+      carouselWrap.addEventListener('touchstart', stopAuto, { passive: true });
+      carouselWrap.addEventListener('touchend', () => setTimeout(startAuto, 1000), { passive: true });
+    }
+
+    // Reset timer on manual navigation
+    prevBtn.addEventListener('click', () => { stopAuto(); goTo(currentIndex - 1); startAuto(); });
+    nextBtn.addEventListener('click', () => { stopAuto(); goTo(currentIndex + 1); startAuto(); });
 
     // Touch/swipe support
     let touchStartX = 0;
@@ -1917,6 +1942,7 @@
     window.addEventListener('resize', () => goTo(currentIndex), { passive: true });
 
     goTo(0);
+    startAuto();
   })();
 </script>
 
