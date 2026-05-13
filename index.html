@@ -667,10 +667,16 @@
       flex-direction: column;
     }
     @media (max-width: 768px) {
-      .carousel-slide { flex: 0 0 calc(85% - 10px); }
+      .carousel-slide {
+        flex: 0 0 100% !important;
+        width: 100%;
+      }
+      .addons-carousel-track-outer {
+        overflow: hidden;
+      }
     }
     @media (max-width: 480px) {
-      .carousel-slide { flex: 0 0 calc(92% - 10px); }
+      .carousel-slide { flex: 0 0 100% !important; width: 100%; }
     }
     .carousel-btn {
       background: var(--white);
@@ -2136,7 +2142,18 @@
 
     let rafId = null;
     let pixelOffset = 0;
+    let currentIndex = 0;
     const SPEED = 0.5;
+
+    function isMobile() {
+      return window.innerWidth <= 768;
+    }
+
+    function getVisibleCount() {
+      var trackW = track.parentElement ? track.parentElement.offsetWidth : 0;
+      var slideW = slides[0] ? slides[0].offsetWidth + 20 : 0;
+      return slideW > 0 ? Math.max(1, Math.floor(trackW / slideW)) : 1;
+    }
 
     function getTrackWidth() {
       const slideW = slides[0] ? slides[0].offsetWidth + 20 : 0;
@@ -2159,11 +2176,25 @@
     });
 
     function goTo(index) {
-      const slideW = slides[0] ? slides[0].offsetWidth + 20 : 0;
-      pixelOffset = index * slideW;
+      var count = slides.length;
+      var visible = isMobile() ? 1 : getVisibleCount();
+      var maxIndex = count - visible;
+      currentIndex = Math.max(0, Math.min(index, maxIndex));
+
+      if (isMobile()) {
+        var slideW = slides[0].offsetWidth + 20;
+        track.style.transition = 'transform 0.35s ease';
+        track.style.transform = 'translateX(-' + (currentIndex * slideW) + 'px)';
+        pixelOffset = currentIndex * slideW;
+      } else {
+        pixelOffset = currentIndex * (slides[0] ? slides[0].offsetWidth + 20 : 0);
+      }
+
       document.querySelectorAll('.carousel-dot').forEach(function(d, i) {
-        d.classList.toggle('active', i === index);
+        d.classList.toggle('active', i === currentIndex);
       });
+      prevBtn.disabled = currentIndex === 0;
+      nextBtn.disabled = currentIndex >= maxIndex;
     }
 
     function animateCarousel() {
@@ -2193,24 +2224,43 @@
 
     // Prev / next buttons
     if (prevBtn) prevBtn.addEventListener('click', function() {
-      isUserInteracting = true;
-      pixelOffset = Math.max(0, pixelOffset - (slides[0].offsetWidth + 20));
-      track.style.transform = 'translateX(-' + pixelOffset + 'px)';
+      if (isMobile()) {
+        goTo(currentIndex - 1);
+      } else {
+        isUserInteracting = true;
+        pixelOffset = Math.max(0, pixelOffset - (slides[0].offsetWidth + 20));
+        track.style.transform = 'translateX(-' + pixelOffset + 'px)';
+      }
     });
     if (nextBtn) nextBtn.addEventListener('click', function() {
-      isUserInteracting = true;
-      pixelOffset += slides[0].offsetWidth + 20;
-      const totalW = getTrackWidth();
-      if (pixelOffset >= totalW) pixelOffset = 0;
-      track.style.transform = 'translateX(-' + pixelOffset + 'px)';
+      if (isMobile()) {
+        goTo(currentIndex + 1);
+      } else {
+        isUserInteracting = true;
+        pixelOffset += slides[0].offsetWidth + 20;
+        var totalW = getTrackWidth();
+        if (pixelOffset >= totalW) pixelOffset = 0;
+        track.style.transform = 'translateX(-' + pixelOffset + 'px)';
+      }
     });
 
     window.addEventListener('resize', function() {
       pixelOffset = 0;
+      track.style.transition = 'none';
       track.style.transform = 'translateX(0)';
+      currentIndex = 0;
+      document.querySelectorAll('.carousel-dot').forEach(function(d, i) { d.classList.toggle('active', i === 0); });
+      if (rafId) cancelAnimationFrame(rafId);
+      if (!isMobile()) {
+        animateCarousel();
+      }
     }, { passive: true });
 
-    animateCarousel();
+    if (!isMobile()) {
+      animateCarousel();
+    } else {
+      goTo(0);
+    }
   })();
 
   /* ── SUPPORT TIERS TOGGLE ──────────────────────────────────────────── */
