@@ -1,0 +1,1127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CBC Worship Center — Digital Operations</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg-dark: #0d0f14;
+      --bg-section: #f7f5f0;
+      --accent: #d4913a;
+      --accent-hover: #c07e2a;
+      --text-dark: #1a1a1a;
+      --text-light: #e8e4dc;
+      --text-muted: #8a8a8a;
+      --navy: #0d1b2a;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-dark);
+      color: var(--text-light);
+      line-height: 1.7;
+      font-size: 16px;
+    }
+
+    /* ── TOP BAR ── */
+    .topbar {
+      background: #080a0e;
+      padding: 8px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .topbar a {
+      color: var(--text-muted);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: color 0.2s;
+    }
+    .topbar a:hover { color: var(--text-light); }
+    .topbar-left, .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    .topbar-label {
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #555;
+    }
+    .topbar-right { margin-left: auto; }
+
+    /* SVG icons inline */
+    .icon { width: 14px; height: 14px; fill: currentColor; flex-shrink: 0; }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      width: 100vw;
+      overflow: hidden;
+    }
+    .hero-video-wrap {
+      position: relative;
+      width: 100%;
+      padding-bottom: 56.25%;
+      overflow: hidden;
+    }
+    .hero-video-wrap iframe {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      border: 0;
+      pointer-events: none;
+    }
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, rgba(13,15,20,0.55) 0%, rgba(13,15,20,0.75) 60%, rgba(13,15,20,0.92) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .hero-content {
+      max-width: 760px;
+      padding: 0 24px;
+      text-align: center;
+    }
+    .eyebrow {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 18px;
+    }
+    .hero-content h1 {
+      font-size: clamp(1.9rem, 4.5vw, 3.2rem);
+      font-weight: 700;
+      line-height: 1.18;
+      color: #fff;
+      margin-bottom: 20px;
+    }
+    .hero-content .subheadline {
+      font-size: clamp(0.95rem, 1.8vw, 1.1rem);
+      font-weight: 300;
+      color: var(--text-light);
+      margin-bottom: 36px;
+      max-width: 640px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .hero-ctas {
+      display: flex;
+      gap: 14px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      padding: 14px 28px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.92rem;
+      font-weight: 600;
+      border-radius: 4px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .btn-primary:hover { background: var(--accent-hover); transform: translateY(-1px); }
+    .btn-ghost {
+      background: transparent;
+      color: var(--text-light);
+      border: 1.5px solid rgba(232,228,220,0.35);
+      padding: 13px 28px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.92rem;
+      font-weight: 500;
+      border-radius: 4px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: border-color 0.2s, color 0.2s, transform 0.15s;
+    }
+    .btn-ghost:hover { border-color: var(--text-light); color: #fff; transform: translateY(-1px); }
+
+    /* ── SECTIONS ── */
+    section { padding: 80px 24px; }
+
+    .section-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 14px;
+    }
+
+    /* ── OUTCOMES ── */
+    #outcomes { background: var(--bg-dark); }
+    .outcomes-header { text-align: center; margin-bottom: 52px; }
+    .outcomes-header h2 {
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      font-weight: 700;
+      color: #fff;
+    }
+    .outcomes-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 28px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .outcome-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-top: 3px solid var(--accent);
+      border-radius: 6px;
+      padding: 36px 28px;
+    }
+    .outcome-card h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 14px;
+    }
+    .outcome-card p {
+      font-size: 0.95rem;
+      color: var(--text-light);
+      line-height: 1.7;
+    }
+
+    /* ── INDUSTRY ANCHOR ── */
+    .industry-anchor {
+      background: var(--navy);
+      padding: 72px 24px;
+      text-align: center;
+    }
+    .industry-anchor h2 {
+      font-size: clamp(1.3rem, 2.5vw, 1.85rem);
+      font-weight: 700;
+      color: #fff;
+      max-width: 700px;
+      margin: 0 auto 20px;
+    }
+    .industry-anchor p {
+      font-size: 1rem;
+      color: var(--text-light);
+      max-width: 660px;
+      margin: 0 auto;
+      line-height: 1.75;
+    }
+
+    /* ── PACKAGES ── */
+    #packages { background: var(--bg-section); }
+    #packages .section-label { color: #8a6120; }
+    .packages-header { text-align: center; margin-bottom: 52px; }
+    .packages-header h2 {
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      font-weight: 700;
+      color: var(--text-dark);
+    }
+    .packages-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+      max-width: 1140px;
+      margin: 0 auto;
+      align-items: start;
+    }
+    .pkg-card {
+      background: #fff;
+      border: 1px solid #e2ddd5;
+      border-radius: 8px;
+      padding: 36px 28px;
+      transition: box-shadow 0.2s;
+    }
+    .pkg-card:hover { box-shadow: 0 8px 32px rgba(0,0,0,0.12); }
+    .pkg-card.featured {
+      border-top: 4px solid var(--accent);
+      box-shadow: 0 6px 28px rgba(0,0,0,0.14);
+    }
+    .pkg-eyebrow {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+    .pkg-card h2 {
+      font-size: 1.45rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 8px;
+    }
+    .pkg-positioning {
+      font-size: 0.93rem;
+      color: #555;
+      margin-bottom: 20px;
+    }
+    .pkg-price {
+      font-size: 1.7rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 24px;
+    }
+    .pkg-price span { font-size: 0.9rem; font-weight: 400; color: var(--text-muted); }
+    .pkg-inclusions {
+      list-style: none;
+      margin-bottom: 28px;
+    }
+    .pkg-inclusions li {
+      font-size: 0.9rem;
+      color: #3a3a3a;
+      padding: 6px 0;
+      border-bottom: 1px solid #f0ece5;
+      padding-left: 20px;
+      position: relative;
+    }
+    .pkg-inclusions li::before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+      font-weight: 700;
+    }
+    .pkg-configure-btn {
+      width: 100%;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      padding: 13px 20px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 600;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .pkg-configure-btn:hover { background: var(--accent-hover); }
+    .pkg-configure-btn.open { background: #555; }
+
+    /* TOGGLES */
+    .pkg-toggles {
+      display: none;
+      margin-top: 24px;
+      border-top: 1px solid #e2ddd5;
+      padding-top: 24px;
+    }
+    .pkg-toggles.open { display: block; }
+    .toggle-group { margin-bottom: 22px; }
+    .toggle-group-label {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #888;
+      margin-bottom: 10px;
+    }
+    .toggle-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .toggle-pill {
+      padding: 7px 14px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 500;
+      border: 1.5px solid #ddd;
+      border-radius: 100px;
+      cursor: pointer;
+      background: #faf9f7;
+      color: #333;
+      transition: all 0.18s;
+    }
+    .toggle-pill:hover { border-color: var(--accent); color: var(--accent); }
+    .toggle-pill.active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
+    .toggle-seats {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.88rem;
+      color: #555;
+    }
+    .toggle-seats input {
+      width: 56px;
+      padding: 6px 8px;
+      border: 1.5px solid #ddd;
+      border-radius: 4px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.88rem;
+      color: var(--text-dark);
+      text-align: center;
+    }
+
+    /* ── ADD-ONS ── */
+    #addons { background: var(--bg-dark); }
+    .addons-header { text-align: center; margin-bottom: 14px; }
+    .addons-header h2 {
+      font-size: clamp(1.4rem, 2.5vw, 1.9rem);
+      font-weight: 700;
+      color: #fff;
+    }
+    .addons-subheading {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin-bottom: 44px;
+    }
+    .addons-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      max-width: 980px;
+      margin: 0 auto;
+    }
+    .addon-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 6px;
+      padding: 28px 24px;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .addon-card.selected {
+      border-color: var(--accent);
+      background: rgba(212,145,58,0.06);
+    }
+    .addon-card-top {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      margin-bottom: 10px;
+    }
+    .addon-checkbox {
+      width: 18px;
+      height: 18px;
+      border: 2px solid rgba(255,255,255,0.25);
+      border-radius: 3px;
+      flex-shrink: 0;
+      margin-top: 3px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.18s;
+    }
+    .addon-card.selected .addon-checkbox {
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+    .addon-checkbox-check { display: none; font-size: 11px; color: #fff; }
+    .addon-card.selected .addon-checkbox-check { display: block; }
+    .addon-name {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #fff;
+    }
+    .addon-price {
+      font-size: 0.85rem;
+      color: var(--accent);
+      margin-top: 3px;
+    }
+    .addon-desc {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.65;
+    }
+    .addon-inner-toggles {
+      margin-top: 14px;
+      display: none;
+    }
+    .addon-card.selected .addon-inner-toggles { display: block; }
+    .addon-tier-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    /* ── ROADMAP ── */
+    #roadmap { background: var(--navy); }
+    .roadmap-header { text-align: center; margin-bottom: 12px; }
+    .roadmap-header h2 {
+      font-size: clamp(1.4rem, 2.5vw, 1.9rem);
+      font-weight: 700;
+      color: #fff;
+    }
+    .roadmap-subheading {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.93rem;
+      margin-bottom: 40px;
+    }
+    .roadmap-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: center;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .roadmap-tag {
+      padding: 8px 18px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 100px;
+      font-size: 0.85rem;
+      color: var(--text-light);
+      font-weight: 400;
+    }
+
+    /* ── STICKY TOTAL BAR ── */
+    #sticky-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #111318;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      padding: 14px 24px;
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      z-index: 999;
+      flex-wrap: wrap;
+    }
+    #sticky-bar.visible { display: flex; }
+    .sticky-total {
+      font-size: 0.95rem;
+      color: var(--text-light);
+    }
+    .sticky-total strong {
+      color: #fff;
+      font-size: 1.05rem;
+    }
+    .sticky-monthly {
+      font-size: 0.85rem;
+      color: var(--accent);
+      margin-top: 2px;
+    }
+    .sticky-share-btn {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      padding: 11px 22px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 600;
+      border-radius: 4px;
+      cursor: pointer;
+      position: relative;
+      transition: background 0.2s;
+    }
+    .sticky-share-btn:hover { background: var(--accent-hover); }
+    .copied-tooltip {
+      display: none;
+      position: absolute;
+      top: -34px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #333;
+      color: #fff;
+      font-size: 0.78rem;
+      padding: 5px 10px;
+      border-radius: 4px;
+      white-space: nowrap;
+    }
+    .copied-tooltip.show { display: block; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: #080a0e;
+      padding: 56px 24px;
+      text-align: center;
+      color: var(--text-muted);
+    }
+    .footer-closing {
+      font-size: 0.95rem;
+      font-style: italic;
+      color: #666;
+      max-width: 640px;
+      margin: 0 auto 32px;
+      line-height: 1.75;
+    }
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 28px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+    .footer-links a {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--text-light); }
+    .footer-contact {
+      font-size: 0.88rem;
+      color: #555;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 700px) {
+      .topbar { justify-content: center; gap: 12px; }
+      .topbar-right { margin-left: 0; }
+      .hero-video-wrap { padding-bottom: 75%; }
+      .packages-grid, .outcomes-grid, .addons-grid { grid-template-columns: 1fr; }
+      #sticky-bar { flex-direction: column; align-items: stretch; }
+      .sticky-share-btn { text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="topbar-left">
+    <span class="topbar-label">Follow us</span>
+    <a href="https://www.instagram.com/cebcfl" target="_blank" rel="noopener">
+      <svg class="icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 1.366.062 2.633.334 3.608 1.308.975.975 1.246 2.242 1.308 3.608.058 1.266.07 1.646.07 4.851s-.012 3.584-.07 4.85c-.062 1.366-.334 2.633-1.308 3.608-.975.975-2.242 1.246-3.608 1.308-1.266.058-1.646.07-4.85.07s-3.584-.012-4.85-.07c-1.366-.062-2.633-.334-3.608-1.308-.975-.975-1.246-2.242-1.308-3.608C2.175 15.585 2.163 15.205 2.163 12s.012-3.584.07-4.85c.062-1.366.334-2.633 1.308-3.608.975-.975 2.242-1.246 3.608-1.308C8.416 2.175 8.796 2.163 12 2.163zm0-2.163C8.741 0 8.332.014 7.052.072 5.197.157 3.355.673 2.014 2.014.673 3.355.157 5.197.072 7.052.014 8.332 0 8.741 0 12c0 3.259.014 3.668.072 4.948.085 1.855.601 3.697 1.942 5.038 1.341 1.341 3.183 1.857 5.038 1.942C8.332 23.986 8.741 24 12 24s3.668-.014 4.948-.072c1.855-.085 3.697-.601 5.038-1.942 1.341-1.341 1.857-3.183 1.942-5.038.058-1.28.072-1.689.072-4.948 0-3.259-.014-3.668-.072-4.948-.085-1.855-.601-3.697-1.942-5.038C20.645.673 18.803.157 16.948.072 15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zm0 10.162a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
+      @cebcfl
+    </a>
+    <a href="https://www.youtube.com/@cebcflchristevangelicalbap190" target="_blank" rel="noopener">
+      <svg class="icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+      @cebcflchristevangelicalbap190
+    </a>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-video-wrap">
+    <iframe
+      src="https://www.youtube.com/embed/Jub4OT0XWas?autoplay=1&mute=1&loop=1&playlist=Jub4OT0XWas&controls=0&playsinline=1&rel=0"
+      title="CBC Worship Center"
+      allow="autoplay; fullscreen"
+      allowfullscreen
+    ></iframe>
+  </div>
+  <div class="hero-overlay">
+    <div class="hero-content">
+      <span class="eyebrow">Digital Operations for Churches</span>
+      <h1>The website is just the front door.</h1>
+      <p class="subheadline">Most churches buy a new website and find themselves in the same place six months later: stale content, missed calls, ministry pages that nobody updates, and one volunteer holding everything together. We build the operational layer underneath, so your church works the way you actually want it to.</p>
+      <div class="hero-ctas">
+        <a href="#packages" class="btn-primary">Configure your package →</a>
+        <a href="#outcomes" class="btn-ghost">See how this came together</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OUTCOMES -->
+<section id="outcomes">
+  <div class="outcomes-header">
+    <div class="section-label">What this builds toward</div>
+    <h2>Three things that change.</h2>
+  </div>
+  <div class="outcomes-grid">
+    <div class="outcome-card">
+      <h3>Findable</h3>
+      <p>A church people can actually find and reach. Fast site, clear navigation, modern donations, visible on Google.</p>
+    </div>
+    <div class="outcome-card">
+      <h3>Current</h3>
+      <p>A church that always feels active. Content updates flow from one place to many. Ministry leaders publish their own pages. Nothing goes stale.</p>
+    </div>
+    <div class="outcome-card">
+      <h3>Reliable</h3>
+      <p>A church where no one falls through the cracks. Calls reach the right person. Voicemails route to the right ministry. Prayer requests get answered the same day.</p>
+    </div>
+  </div>
+</section>
+
+<!-- INDUSTRY ANCHOR -->
+<div class="industry-anchor">
+  <h2>What a typical agency charges for this scope</h2>
+  <p>Custom church websites with operational integration usually run $20,000 to $40,000 at established agencies. Our approach delivers the same outcomes at a fraction of the cost because we built the integration framework once and reuse it across every project. You get the same value without paying for our learning curve.</p>
+</div>
+
+<!-- PACKAGES -->
+<section id="packages">
+  <div class="packages-header">
+    <div class="section-label" style="color:#8a6120;">Choose your package</div>
+    <h2>Three ways to get started.</h2>
+  </div>
+  <div class="packages-grid">
+
+    <!-- PACKAGE A -->
+    <div class="pkg-card" id="card-a">
+      <div class="pkg-eyebrow">Findable</div>
+      <h2>Modern Foundation</h2>
+      <p class="pkg-positioning">A church people can actually find and reach.</p>
+      <div class="pkg-price" id="price-a">$2,500 – $3,500 <span>one-time</span></div>
+      <ul class="pkg-inclusions">
+        <li>New website built on Wix Studio or Netlify, modern, fast, mobile-first</li>
+        <li>Homepage redesigned so service times, livestream, and events are first</li>
+        <li>Up to 10 ministry pages with consistent templates</li>
+        <li>Modern donation page with Stripe, Apple Pay, Google Pay</li>
+        <li>Basic local SEO and Google Business Profile setup</li>
+        <li>Account security and continuity baseline</li>
+        <li>One training session</li>
+      </ul>
+      <button class="pkg-configure-btn" id="btn-a" onclick="togglePackage('a')">Configure Modern Foundation</button>
+      <div class="pkg-toggles" id="toggles-a">
+        <div class="toggle-group">
+          <div class="toggle-group-label">Website Platform</div>
+          <div class="toggle-pills">
+            <button class="toggle-pill active" onclick="selectToggle(this,'platform-a','wix')">Wix Studio — familiar, easy to maintain</button>
+            <button class="toggle-pill" onclick="selectToggle(this,'platform-a','netlify')">Netlify — faster performance, more flexible</button>
+          </div>
+        </div>
+        <div class="toggle-group">
+          <div class="toggle-group-label">Donation Setup</div>
+          <div class="toggle-pills">
+            <button class="toggle-pill active" onclick="selectToggle(this,'donation-a','stripe')">Stripe + Apple/Google Pay — recommended</button>
+            <button class="toggle-pill" onclick="selectToggle(this,'donation-a','paypal')">PayPal only — keep current setup</button>
+            <button class="toggle-pill" onclick="selectToggle(this,'donation-a','givelify')">Givelify — church-specific platform</button>
+            <button class="toggle-pill" onclick="selectToggle(this,'donation-a','both')">Stripe + PayPal both — broadest coverage</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PACKAGE B -->
+    <div class="pkg-card featured" id="card-b">
+      <div class="pkg-eyebrow">Current</div>
+      <h2>Connected Foundation</h2>
+      <p class="pkg-positioning">A church that always feels active, alive, and present.</p>
+      <div class="pkg-price" id="price-b">$5,000 – $6,500 <span>one-time</span></div>
+      <ul class="pkg-inclusions">
+        <li>Everything in Modern Foundation</li>
+        <li>Sunday service video automatically posts to YouTube, Facebook, and Instagram</li>
+        <li>Each ministry leader has their own login for their content</li>
+        <li>Updates flow from one place to many</li>
+        <li>QR codes for the church building</li>
+        <li>Digital Operations Framework with publishing standards</li>
+        <li>Monthly analytics dashboard</li>
+      </ul>
+      <button class="pkg-configure-btn" id="btn-b" onclick="togglePackage('b')">Configure Connected Foundation</button>
+      <div class="pkg-toggles" id="toggles-b">
+        <div class="toggle-group">
+          <div class="toggle-group-label">Website Platform</div>
+          <div class="toggle-pills">
+            <button class="toggle-pill active" onclick="selectToggle(this,'platform-b','wix')">Wix Studio — familiar, easy to maintain</button>
+            <button class="toggle-pill" onclick="selectToggle(this,'platform-b','netlify')">Netlify — faster performance, more flexible</button>
+          </div>
+        </div>
+        <div class="toggle-group">
+          <div class="toggle-group-label">Donation Setup</div>
+          <div class="toggle-pills">
+            <button class="toggle-pill active" onclick="selectToggle(this,'donation-b','stripe')">Stripe + Apple/Google Pay — recommended</button>
+            <button class="toggle-pill" onclick="selectToggle(this,'donation-b','paypal')">PayPal only — keep current setup</button>
+            <button class="toggle-pill" onclick="selectToggle(this,'donation-b','givelify')">Givelify — church-specific platform</button>
+            <button class="toggle-pill" onclick="selectToggle(this,'donation-b','both')">Stripe + PayPal both — broadest coverage</button>
+          </div>
+        </div>
+        <div class="toggle-group">
+          <div class="toggle-group-label">Content Editing</div>
+          <div class="toggle-pills">
+            <button class="toggle-pill active" onclick="selectToggle(this,'cms-b','sheet')">Sheet-based automation — faster setup, lower cost</button>
+            <button class="toggle-pill" onclick="selectToggle(this,'cms-b','sanity')">Full CMS with ministry logins (Sanity Studio) — scalable</button>
+          </div>
+        </div>
+        <div class="toggle-group">
+          <div class="toggle-group-label">Publishing Tools</div>
+          <div class="toggle-pills">
+            <button class="toggle-pill active" onclick="selectToggle(this,'publish-b','core')">Core automation — Facebook, Instagram, YouTube</button>
+            <button class="toggle-pill" onclick="selectToggle(this,'publish-b','ghl')">Extended publishing tools (GoHighLevel) — richer multi-channel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PACKAGE C -->
+    <div class="pkg-card" id="card-c">
+      <div class="pkg-eyebrow">Reliable</div>
+      <h2>Communications Platform</h2>
+      <p class="pkg-positioning">A church where the family who calls actually gets a callback.</p>
+      <div class="pkg-price" id="price-c">$7,500 – $9,500 <span>one-time</span></div>
+      <ul class="pkg-inclusions">
+        <li>Everything in Connected Foundation</li>
+        <li>Microsoft Teams Phone with operator-to-deacon cascade routing</li>
+        <li>Voicemails arrive in the right ministry's inbox automatically</li>
+        <li>Hold music, transfer interface, per-ministry direct lines</li>
+        <li>Up to 5 user seats included</li>
+        <li>Microsoft 365 Nonprofit setup, free or discounted for qualifying churches</li>
+        <li>Shared inboxes for prayer requests</li>
+        <li>Expanded analytics: response-time tracking, missed-call counts</li>
+      </ul>
+      <button class="pkg-configure-btn" id="btn-c" onclick="togglePackage('c')">Configure Communications Platform</button>
+      <div class="pkg-toggles" id="toggles-c">
+        <div class="toggle-group">
+          <div class="toggle-group-label">Website Platform</div>
+          <div class="toggle-pills">
+            <button class="toggle-pill active" onclick="selectToggle(this,'platform-c','wix')">Wix Studio — familiar, easy to maintain</button>
+            <button class="toggle-pill" onclick="selectToggle(this,'platform-c','netlify')">Netlify — faster performance, more flexible</button>
+          </div>
+        </div>
+        <div class="toggle-group">
+          <div class="toggle-group-label">Donation Setup</div>
+          <div class="toggle-pills">
+            <button class="toggle-pill active" onclick="selectToggle(this,'donation-c','stripe')">Stripe + Apple/Google Pay — recommended</button>
+            <button class="toggle-pill" onclick="selectToggle(this,'donation-c','paypal')">PayPal only — keep current setup</button>
+            <button class="toggle-pill" onclick="selectToggle(this,'donation-c','givelify')">Givelify — church-specific platform</button>
+            <button class="toggle-pill" onclick="selectToggle(this,'donation-c','both')">Stripe + PayPal both — broadest coverage</button>
+          </div>
+        </div>
+        <div class="toggle-group">
+          <div class="toggle-group-label">Content Editing</div>
+          <div class="toggle-pills">
+            <button class="toggle-pill active" onclick="selectToggle(this,'cms-c','sheet')">Sheet-based automation — faster setup, lower cost</button>
+            <button class="toggle-pill" onclick="selectToggle(this,'cms-c','sanity')">Full CMS with ministry logins (Sanity Studio) — scalable</button>
+          </div>
+        </div>
+        <div class="toggle-group">
+          <div class="toggle-group-label">Publishing Tools</div>
+          <div class="toggle-pills">
+            <button class="toggle-pill active" onclick="selectToggle(this,'publish-c','core')">Core automation — Facebook, Instagram, YouTube</button>
+            <button class="toggle-pill" onclick="selectToggle(this,'publish-c','ghl')">Extended publishing tools (GoHighLevel) — richer multi-channel</button>
+          </div>
+        </div>
+        <div class="toggle-group">
+          <div class="toggle-group-label">Email &amp; Calendar Platform</div>
+          <div class="toggle-pills">
+            <button class="toggle-pill active" onclick="selectToggle(this,'email-c','m365')">Microsoft 365 Nonprofit — pairs with Teams Phone, free for qualifying</button>
+            <button class="toggle-pill" onclick="selectToggle(this,'email-c','gws')">Google Workspace for Nonprofits — if your team prefers Gmail</button>
+          </div>
+        </div>
+        <div class="toggle-group">
+          <div class="toggle-group-label">Phone Seats</div>
+          <div class="toggle-seats">
+            <span>5 seats included — additional seats:</span>
+            <input type="number" id="extra-seats" min="0" max="20" value="0" oninput="updateTotal()" />
+            <span>@ $150–$200 each</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /packages-grid -->
+</section>
+
+<!-- ADD-ONS -->
+<section id="addons">
+  <div class="addons-header">
+    <div class="section-label">Optional add-ons</div>
+    <h2>Add what you need, leave the rest for later.</h2>
+  </div>
+  <p class="addons-subheading">Available with any package.</p>
+  <div class="addons-grid">
+
+    <div class="addon-card" id="addon-content" onclick="toggleAddon('content')">
+      <div class="addon-card-top">
+        <div class="addon-checkbox"><span class="addon-checkbox-check">✓</span></div>
+        <div>
+          <div class="addon-name">Content Creation Session</div>
+          <div class="addon-price" id="addon-content-price">$1,200 – $2,000</div>
+        </div>
+      </div>
+      <p class="addon-desc">We come to the church and capture fresh photos, short interview clips with your pastor and ministry leaders, and b-roll for your website and social channels.</p>
+      <div class="addon-inner-toggles">
+        <div class="toggle-group-label" style="color:#888;font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;margin-top:8px;">Session length</div>
+        <div class="addon-tier-pills">
+          <button class="toggle-pill active" onclick="event.stopPropagation();selectToggle(this,'content-tier','half')">Half-day — $1,200</button>
+          <button class="toggle-pill" onclick="event.stopPropagation();selectToggle(this,'content-tier','full')">Full-day — $2,000</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="addon-card" id="addon-seo" onclick="toggleAddon('seo')">
+      <div class="addon-card-top">
+        <div class="addon-checkbox"><span class="addon-checkbox-check">✓</span></div>
+        <div>
+          <div class="addon-name">SEO Optimization</div>
+          <div class="addon-price">$800 – $1,200</div>
+        </div>
+      </div>
+      <p class="addon-desc">Local SEO for Palm Beach County. Keyword research, schema markup, on-page optimization, sitemap submission, ranking monitoring.</p>
+    </div>
+
+    <div class="addon-card" id="addon-training" onclick="toggleAddon('training')">
+      <div class="addon-card-top">
+        <div class="addon-checkbox"><span class="addon-checkbox-check">✓</span></div>
+        <div>
+          <div class="addon-name">Training Package</div>
+          <div class="addon-price">$600 – $1,000</div>
+        </div>
+      </div>
+      <p class="addon-desc">Three training sessions across age groups. Written cheat sheets, recorded walkthroughs, 30-day support window.</p>
+    </div>
+
+    <div class="addon-card" id="addon-support" onclick="toggleAddon('support')">
+      <div class="addon-card-top">
+        <div class="addon-checkbox"><span class="addon-checkbox-check">✓</span></div>
+        <div>
+          <div class="addon-name">Ongoing Support</div>
+          <div class="addon-price" id="addon-support-price">$400 – $600/month</div>
+        </div>
+      </div>
+      <p class="addon-desc">Monthly check-in, automation monitoring, support when something breaks.</p>
+      <div class="addon-inner-toggles">
+        <div class="toggle-group-label" style="color:#888;font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;margin-top:8px;">Support tier</div>
+        <div class="addon-tier-pills">
+          <button class="toggle-pill active" onclick="event.stopPropagation();selectToggle(this,'support-tier','essential')">Essential — $400/mo</button>
+          <button class="toggle-pill" onclick="event.stopPropagation();selectToggle(this,'support-tier','plus')">Plus — $500/mo</button>
+          <button class="toggle-pill" onclick="event.stopPropagation();selectToggle(this,'support-tier','full')">Full — $600/mo</button>
+        </div>
+        <div class="toggle-group-label" style="color:#888;font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;margin-top:16px;">Duration</div>
+        <div class="addon-tier-pills">
+          <button class="toggle-pill active" onclick="event.stopPropagation();selectToggle(this,'support-duration','6mo')">6 months</button>
+          <button class="toggle-pill" onclick="event.stopPropagation();selectToggle(this,'support-duration','12mo')">12 months</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ROADMAP -->
+<section id="roadmap">
+  <div class="roadmap-header">
+    <div class="section-label">What comes next</div>
+    <h2>Once the foundation is in place.</h2>
+  </div>
+  <p class="roadmap-subheading">These are the next things churches typically add.</p>
+  <div class="roadmap-tags">
+    <span class="roadmap-tag">Livestream automation</span>
+    <span class="roadmap-tag">Searchable sermon archive</span>
+    <span class="roadmap-tag">Mobile app</span>
+    <span class="roadmap-tag">AI-assisted clip generation</span>
+    <span class="roadmap-tag">Spanish and Portuguese support</span>
+    <span class="roadmap-tag">Volunteer scheduling</span>
+    <span class="roadmap-tag">Paid event registration</span>
+    <span class="roadmap-tag">Member portal with prayer wall</span>
+    <span class="roadmap-tag">After-hours AI receptionist</span>
+  </div>
+</section>
+
+<!-- STICKY TOTAL BAR -->
+<div id="sticky-bar">
+  <div>
+    <div class="sticky-total" id="sticky-total-text">Your selection: <strong id="sticky-price">—</strong></div>
+    <div class="sticky-monthly" id="sticky-monthly-text" style="display:none;"></div>
+  </div>
+  <button class="sticky-share-btn" onclick="shareConfig()">
+    Save and share with leadership
+    <span class="copied-tooltip" id="copied-tooltip">Link copied — share with your board</span>
+  </button>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <p class="footer-closing">"We built this offer page the way we build our client work: configurable, fast, designed for the people who actually have to use it."</p>
+  <div class="footer-links">
+    <a href="#">About</a>
+    <a href="#">Process</a>
+    <a href="#">Other projects</a>
+    <a href="#">Contact</a>
+  </div>
+  <p class="footer-contact">If you'd rather talk through this, we're here.</p>
+</footer>
+
+<script>
+  // ─── STATE ───────────────────────────────────────────────────────────────
+  const state = {
+    selectedPackage: null, // 'a', 'b', or 'c'
+    toggles: {
+      'platform-a': 'wix',  'platform-b': 'wix',  'platform-c': 'wix',
+      'donation-a': 'stripe','donation-b': 'stripe','donation-c': 'stripe',
+      'cms-b': 'sheet',     'cms-c': 'sheet',
+      'publish-b': 'core',  'publish-c': 'core',
+      'email-c': 'm365',
+      'content-tier': 'half',
+      'support-tier': 'essential',
+      'support-duration': '6mo'
+    },
+    addons: {
+      content: false,
+      seo: false,
+      training: false,
+      support: false
+    }
+  };
+
+  // ─── BASE PRICES ─────────────────────────────────────────────────────────
+  const BASE = {
+    a: [2500, 3500],
+    b: [5000, 6500],
+    c: [7500, 9500]
+  };
+
+  // ─── TOGGLE ADJUSTMENTS ──────────────────────────────────────────────────
+  function getAdjustments(pkg) {
+    let min = 0, max = 0;
+    const donation = state.toggles[`donation-${pkg}`];
+    if (donation === 'givelify') { min += 100; max += 200; }
+    if (donation === 'both')     { min += 100; max += 150; }
+    if (pkg === 'b' || pkg === 'c') {
+      if (state.toggles[`cms-${pkg}`] === 'sanity')  { min += 300; max += 500; }
+      if (state.toggles[`publish-${pkg}`] === 'ghl') { min += 200; max += 400; }
+    }
+    if (pkg === 'c') {
+      const seats = parseInt(document.getElementById('extra-seats')?.value || 0);
+      if (seats > 0) { min += seats * 150; max += seats * 200; }
+    }
+    return [min, max];
+  }
+
+  // ─── ADDON PRICES ────────────────────────────────────────────────────────
+  function getAddonOnetime() {
+    let min = 0, max = 0;
+    if (state.addons.content) {
+      const tier = state.toggles['content-tier'];
+      if (tier === 'half') { min += 1200; max += 1200; }
+      else                 { min += 2000; max += 2000; }
+    }
+    if (state.addons.seo)      { min += 800;  max += 1200; }
+    if (state.addons.training) { min += 600;  max += 1000; }
+    return [min, max];
+  }
+
+  function getAddonMonthly() {
+    if (!state.addons.support) return null;
+    const tier = state.toggles['support-tier'];
+    const rates = { essential: 400, plus: 500, full: 600 };
+    return rates[tier] || 400;
+  }
+
+  // ─── FORMATTING ──────────────────────────────────────────────────────────
+  function fmt(n) {
+    return '$' + n.toLocaleString();
+  }
+  function fmtRange(min, max) {
+    return min === max ? fmt(min) : `${fmt(min)} – ${fmt(max)}`;
+  }
+
+  // ─── UPDATE TOTAL ─────────────────────────────────────────────────────────
+  function updateTotal() {
+    // Update package prices
+    ['a','b','c'].forEach(pkg => {
+      const [adjMin, adjMax] = getAdjustments(pkg);
+      const [baseMin, baseMax] = BASE[pkg];
+      const hasGHL = (pkg === 'b' || pkg === 'c') && state.toggles[`publish-${pkg}`] === 'ghl';
+      const note = hasGHL ? ' <span style="font-size:0.7rem;color:#888;">+ GHL monthly</span>' : '';
+      document.getElementById(`price-${pkg}`).innerHTML =
+        `${fmtRange(baseMin + adjMin, baseMax + adjMax)} <span>one-time</span>${note}`;
+    });
+
+    // Update sticky bar
+    if (!state.selectedPackage) return;
+    const pkg = state.selectedPackage;
+    const [adjMin, adjMax] = getAdjustments(pkg);
+    const [baseMin, baseMax] = BASE[pkg];
+    const [aMin, aMax] = getAddonOnetime();
+    const monthly = getAddonMonthly();
+
+    const totalMin = baseMin + adjMin + aMin;
+    const totalMax = baseMax + adjMax + aMax;
+
+    document.getElementById('sticky-price').textContent = `${fmtRange(totalMin, totalMax)} one-time`;
+    const monthlyEl = document.getElementById('sticky-monthly-text');
+    if (monthly) {
+      monthlyEl.textContent = `Plus ${fmt(monthly)}/mo ongoing`;
+      monthlyEl.style.display = 'block';
+    } else {
+      monthlyEl.style.display = 'none';
+    }
+  }
+
+  // ─── PACKAGE TOGGLE ──────────────────────────────────────────────────────
+  function togglePackage(pkg) {
+    const wasOpen = state.selectedPackage === pkg && document.getElementById(`toggles-${pkg}`).classList.contains('open');
+    // Close all
+    ['a','b','c'].forEach(p => {
+      document.getElementById(`toggles-${p}`).classList.remove('open');
+      document.getElementById(`btn-${p}`).classList.remove('open');
+      document.getElementById(`btn-${p}`).textContent = `Configure ${{a:'Modern Foundation',b:'Connected Foundation',c:'Communications Platform'}[p]}`;
+    });
+    if (!wasOpen) {
+      document.getElementById(`toggles-${pkg}`).classList.add('open');
+      document.getElementById(`btn-${pkg}`).classList.add('open');
+      document.getElementById(`btn-${pkg}`).textContent = `Close configuration`;
+      state.selectedPackage = pkg;
+      document.getElementById('sticky-bar').classList.add('visible');
+    } else {
+      state.selectedPackage = null;
+      if (!Object.values(state.addons).some(v => v)) {
+        document.getElementById('sticky-bar').classList.remove('visible');
+      }
+    }
+    updateTotal();
+  }
+
+  // ─── PILL TOGGLE ─────────────────────────────────────────────────────────
+  function selectToggle(el, group, value) {
+    // Deactivate siblings in same group
+    const pills = el.closest('.toggle-pills') || el.closest('.addon-tier-pills');
+    if (pills) {
+      pills.querySelectorAll('.toggle-pill').forEach(p => p.classList.remove('active'));
+    }
+    el.classList.add('active');
+    state.toggles[group] = value;
+    updateTotal();
+  }
+
+  // ─── ADDON TOGGLE ────────────────────────────────────────────────────────
+  function toggleAddon(name) {
+    state.addons[name] = !state.addons[name];
+    const card = document.getElementById(`addon-${name}`);
+    card.classList.toggle('selected', state.addons[name]);
+    if (Object.values(state.addons).some(v => v) || state.selectedPackage) {
+      document.getElementById('sticky-bar').classList.add('visible');
+    } else {
+      document.getElementById('sticky-bar').classList.remove('visible');
+    }
+    updateTotal();
+  }
+
+  // ─── SHARE ────────────────────────────────────────────────────────────────
+  function shareConfig() {
+    const url = window.location.href.split('?')[0];
+    const params = new URLSearchParams();
+    if (state.selectedPackage) params.set('pkg', state.selectedPackage);
+    Object.entries(state.toggles).forEach(([k,v]) => params.set(k, v));
+    Object.entries(state.addons).forEach(([k,v]) => { if (v) params.set(`addon-${k}`, '1'); });
+    const full = url + (params.toString() ? '?' + params.toString() : '');
+    navigator.clipboard.writeText(full).catch(() => {});
+    const tip = document.getElementById('copied-tooltip');
+    tip.classList.add('show');
+    setTimeout(() => tip.classList.remove('show'), 2500);
+  }
+
+  // ─── INIT ─────────────────────────────────────────────────────────────────
+  updateTotal();
+</script>
+</body>
+</html>
